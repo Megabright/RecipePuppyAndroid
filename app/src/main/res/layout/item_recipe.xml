@@ -20,9 +20,10 @@
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 app:mutableText="@{viewModel.getRecipeTitle()}"
+                android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
                 android:id="@+id/recipe_href"
@@ -32,7 +33,7 @@
                 app:mutableText="@{viewModel.getRecipeHref()}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recipe_title" />
+                app:layout_constraintTop_toBottomOf="@+id/recipe_title"/>
 
         <TextView
                 android:id="@+id/recipe_ingredients"
@@ -42,7 +43,7 @@
                 app:mutableText="@{viewModel.getRecipeIngredients()}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recipe_href" />
+                app:layout_constraintTop_toBottomOf="@+id/recipe_href"/>
 
         <TextView
                 android:id="@+id/recipe_thumbnail"
@@ -52,7 +53,16 @@
                 app:mutableText="@{viewModel.getRecipeThumbnail()}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recipe_ingredients" />
+                app:layout_constraintTop_toBottomOf="@+id/recipe_ingredients"/>
+
+        <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintTop_toBottomOf="@+id/recipe_thumbnail"
+        />
 
     </android.support.constraint.ConstraintLayout>
 </layout>
