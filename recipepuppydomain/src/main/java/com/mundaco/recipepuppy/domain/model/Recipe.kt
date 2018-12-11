@@ -1,4 +1,4 @@
-package com.mundaco.recipepuppy.model
+package com.mundaco.recipepuppy.domain.model
 
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey

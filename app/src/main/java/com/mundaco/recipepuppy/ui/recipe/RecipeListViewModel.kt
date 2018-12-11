@@ -4,9 +4,9 @@ import android.arch.lifecycle.MutableLiveData
 import android.view.View
 import com.mundaco.recipepuppy.R
 import com.mundaco.recipepuppy.base.BaseViewModel
-import com.mundaco.recipepuppy.model.Recipe
-import com.mundaco.recipepuppy.model.RecipeDao
-import com.mundaco.recipepuppy.network.RecipeApi
+import com.mundaco.recipepuppy.data.model.RecipeDao
+import com.mundaco.recipepuppy.data.network.RecipeApi
+import com.mundaco.recipepuppy.domain.model.Recipe
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable

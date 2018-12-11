@@ -1,6 +1,6 @@
 package com.mundaco.recipepuppy.injection.component
 
-import com.mundaco.recipepuppy.injection.module.NetworkModule
+import com.mundaco.recipepuppy.data.injection.module.NetworkModule
 import com.mundaco.recipepuppy.ui.recipe.RecipeListViewModel
 import dagger.Component
 import javax.inject.Singleton

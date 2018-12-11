@@ -2,7 +2,7 @@ package com.mundaco.recipepuppy.ui.recipe
 
 import android.arch.lifecycle.MutableLiveData
 import com.mundaco.recipepuppy.base.BaseViewModel
-import com.mundaco.recipepuppy.model.Recipe
+import com.mundaco.recipepuppy.domain.model.Recipe
 
 class RecipeViewModel: BaseViewModel() {
 

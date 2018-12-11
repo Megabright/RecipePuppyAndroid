@@ -1,7 +1,7 @@
-package com.mundaco.recipepuppy.injection.module
+package com.mundaco.recipepuppy.data.injection.module
 
-import com.mundaco.recipepuppy.network.RecipeApi
-import com.mundaco.recipepuppy.utils.BASE_URL
+import com.mundaco.recipepuppy.data.network.RecipeApi
+import com.mundaco.recipepuppy.data.utils.BASE_URL
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
