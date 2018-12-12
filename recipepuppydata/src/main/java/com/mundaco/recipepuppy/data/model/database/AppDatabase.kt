@@ -7,5 +7,5 @@ import com.mundaco.recipepuppy.domain.model.Recipe
 
 @Database(entities = arrayOf(Recipe::class), version = 1)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun postDao(): RecipeDao
+    abstract fun recipeDao(): RecipeDao
 }

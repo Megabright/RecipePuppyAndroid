@@ -5,6 +5,7 @@ import com.mundaco.recipepuppy.data.injection.module.NetworkModule
 import com.mundaco.recipepuppy.injection.component.DaggerViewModelInjector
 import com.mundaco.recipepuppy.injection.component.ViewModelInjector
 import com.mundaco.recipepuppy.ui.recipe.RecipeListViewModel
+import com.mundaco.recipepuppy.ui.recipe.RecipeViewModel
 
 abstract class BaseViewModel: ViewModel(){
 
@@ -23,7 +24,7 @@ abstract class BaseViewModel: ViewModel(){
     private fun inject() {
         when (this) {
             is RecipeListViewModel -> injector.inject(this)
-            //is RecipeViewModel -> injector.inject(this)
+            is RecipeViewModel -> injector.inject(this)
         }
     }
 }

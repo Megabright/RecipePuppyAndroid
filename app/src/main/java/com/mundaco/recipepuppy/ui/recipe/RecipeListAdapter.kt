@@ -1,5 +1,6 @@
 package com.mundaco.recipepuppy.ui.recipe
 
+import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import com.mundaco.recipepuppy.R
 import com.mundaco.recipepuppy.databinding.ItemRecipeBinding
 import com.mundaco.recipepuppy.domain.model.Recipe
+import com.mundaco.recipepuppy.utils.extension.getParentActivity
 
 class RecipeListAdapter: RecyclerView.Adapter<RecipeListAdapter.ViewHolder>() {
     private lateinit var recipeList: List<Recipe>
@@ -34,6 +36,15 @@ class RecipeListAdapter: RecyclerView.Adapter<RecipeListAdapter.ViewHolder>() {
 
         fun bind(recipe:Recipe){
             viewModel.bind(recipe)
+
+            //
+            itemView.setOnClickListener {
+                val intent = Intent(it.context , RecipeDetailActivity::class.java )
+                intent.putExtra("recipe", recipe)
+                it.getParentActivity()?.startActivity(intent)
+
+            }
+
             binding.viewModel = viewModel
         }
     }

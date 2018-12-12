@@ -42,7 +42,6 @@ class RecipeListViewModel(private val recipeDao: RecipeDao) : BaseViewModel() {
                 else
                     Observable.just(dbRecipeList)
             }
-            //recipeApi.getRecipeResponse()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { onRetrieveRecipeListStart() }

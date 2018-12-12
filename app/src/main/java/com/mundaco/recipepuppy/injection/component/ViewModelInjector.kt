@@ -2,6 +2,7 @@ package com.mundaco.recipepuppy.injection.component
 
 import com.mundaco.recipepuppy.data.injection.module.NetworkModule
 import com.mundaco.recipepuppy.ui.recipe.RecipeListViewModel
+import com.mundaco.recipepuppy.ui.recipe.RecipeViewModel
 import dagger.Component
 import javax.inject.Singleton
 
@@ -13,6 +14,7 @@ interface ViewModelInjector {
      * @param recipeListViewModel RecipeListViewModel in which to inject the dependencies
      */
     fun inject(recipeListViewModel: RecipeListViewModel)
+    fun inject(recipeViewModel: RecipeViewModel)
 
     @Component.Builder
     interface Builder {
