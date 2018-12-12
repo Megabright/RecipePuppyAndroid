@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.mundaco.recipepuppy.R
 import com.mundaco.recipepuppy.databinding.ItemRecipeBinding
-import com.mundaco.recipepuppy.domain.model.Recipe
+import com.mundaco.recipepuppy.datamodel.Recipe
 import com.mundaco.recipepuppy.utils.extension.getParentActivity
 
 class RecipeListAdapter: RecyclerView.Adapter<RecipeListAdapter.ViewHolder>() {

@@ -6,7 +6,7 @@ import com.mundaco.recipepuppy.R
 import com.mundaco.recipepuppy.base.BaseViewModel
 import com.mundaco.recipepuppy.data.model.RecipeDao
 import com.mundaco.recipepuppy.data.network.RecipeApi
-import com.mundaco.recipepuppy.domain.model.Recipe
+import com.mundaco.recipepuppy.datamodel.Recipe
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -22,20 +22,21 @@ class RecipeListViewModel(private val recipeDao: RecipeDao) : BaseViewModel() {
     private lateinit var subscription: Disposable
 
     val errorMessage: MutableLiveData<Int> = MutableLiveData()
-    val errorClickListener = View.OnClickListener { loadRecipes() }
+    val errorClickListener = View.OnClickListener { loadRecipes("") }
 
     val recipeListAdapter: RecipeListAdapter = RecipeListAdapter()
 
     init {
-        loadRecipes()
+        loadRecipes("ab")
     }
 
 
-    private fun loadRecipes() {
-        subscription = Observable.fromCallable { recipeDao.all }
+    private fun loadRecipes(query: String) {
+        subscription = Observable.fromCallable { recipeDao.search(query) }
             .concatMap { dbRecipeList ->
                 if (dbRecipeList.isEmpty())
-                    recipeApi.getRecipeResponse().concatMap { apiRecipeResponse ->
+                    recipeApi.getRecipeResponse(query).concatMap {
+                            apiRecipeResponse ->
                         recipeDao.insertAll(*apiRecipeResponse.results.toTypedArray())
                         Observable.just(apiRecipeResponse.results)
                     }

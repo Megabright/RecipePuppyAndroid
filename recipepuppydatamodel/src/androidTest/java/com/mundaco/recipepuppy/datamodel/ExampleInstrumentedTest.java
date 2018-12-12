@@ -1,4 +1,4 @@
-package com.mundaco.recipepuppy.domain;
+package com.mundaco.recipepuppy.datamodel;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.mundaco.recipepuppy.domain.test", appContext.getPackageName());
+        assertEquals("com.mundaco.recipepuppy.datamodel.test", appContext.getPackageName());
     }
 }
