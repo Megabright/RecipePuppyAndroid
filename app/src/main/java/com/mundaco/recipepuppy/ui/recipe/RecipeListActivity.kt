@@ -9,12 +9,8 @@ import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import com.mundaco.recipepuppy.R
-import com.mundaco.recipepuppy.data.injection.module.NetworkModule
 import com.mundaco.recipepuppy.databinding.ActivityRecipeListBinding
 import com.mundaco.recipepuppy.injection.ViewModelFactory
-import com.mundaco.recipepuppy.injection.component.DaggerViewModelInjector
-import com.mundaco.recipepuppy.injection.component.ViewModelInjector
-import com.mundaco.recipepuppy.data.injection.module.AppModule
 
 class RecipeListActivity : AppCompatActivity() {
 
@@ -26,22 +22,14 @@ class RecipeListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
 
-        val injector: ViewModelInjector = DaggerViewModelInjector
-            .builder()
-            .appModule(AppModule(this.application))
-            .networkModule(NetworkModule)
-            .build()
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_recipe_list)
         binding.recipeList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        viewModel = ViewModelProviders.of(this, ViewModelFactory(this)).get(RecipeListViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, ViewModelFactory(applicationContext)).get(RecipeListViewModel::class.java)
         viewModel.errorMessage.observe(this, Observer {
                 errorMessage -> if(errorMessage != null) showError(errorMessage) else hideError()
         })
         binding.viewModel = viewModel
-
-        injector.inject(viewModel)
 
     }
 
