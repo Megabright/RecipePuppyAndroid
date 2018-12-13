@@ -32,6 +32,14 @@ class RecipeListViewModel(private val recipeDao: RecipeDao) : BaseViewModel() {
 
 
     fun loadRecipes(query: String) {
+
+        if(query.isEmpty()) {
+            onRetrieveRecipeListStart()
+            onRetrieveRecipeListSuccess(emptyList())
+            onRetrieveRecipeListFinish()
+            return
+        }
+
         subscription = Observable.fromCallable { recipeDao.search(query) }
             .concatMap { dbRecipeList ->
                 if (dbRecipeList.isEmpty())
