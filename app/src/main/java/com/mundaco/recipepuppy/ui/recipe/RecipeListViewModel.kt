@@ -1,6 +1,7 @@
 package com.mundaco.recipepuppy.ui.recipe
 
 import android.arch.lifecycle.MutableLiveData
+import android.support.v7.widget.SearchView
 import android.view.View
 import com.mundaco.recipepuppy.R
 import com.mundaco.recipepuppy.base.BaseViewModel
@@ -26,12 +27,23 @@ class RecipeListViewModel(private val recipeDao: RecipeDao) : BaseViewModel() {
 
     val recipeListAdapter: RecipeListAdapter = RecipeListAdapter()
 
+    val onQueryTextListener = object: SearchView.OnQueryTextListener {
+        override fun onQueryTextSubmit(query: String?): Boolean {
+            loadRecipes(query!!)
+            return false
+        }
+
+        override fun onQueryTextChange(query: String?): Boolean {
+            loadRecipes(query!!)
+            return false
+        }
+    }
+
     init {
         loadRecipes("")
     }
 
-
-    fun loadRecipes(query: String) {
+    private fun loadRecipes(query: String) {
 
         if(query.isEmpty()) {
             onRetrieveRecipeListStart()

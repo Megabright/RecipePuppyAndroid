@@ -5,7 +5,7 @@ import android.arch.persistence.room.RoomDatabase
 import com.mundaco.recipepuppy.data.model.RecipeDao
 import com.mundaco.recipepuppy.datamodel.Recipe
 
-@Database(entities = arrayOf(Recipe::class), version = 1)
+@Database(entities = [Recipe::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun recipeDao(): RecipeDao
 }

@@ -19,10 +19,12 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
-        <SearchView
+        <android.support.v7.widget.SearchView
+                android:id="@+id/recipe_search"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/recipe_search"/>
+                app:onQueryTextListener="@{viewModel.onQueryTextListener}"
+                />
 
 
         <android.support.v7.widget.RecyclerView

@@ -5,9 +5,11 @@ import android.arch.lifecycle.Observer
 import android.databinding.BindingAdapter
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.SearchView
 import android.view.View
 import android.widget.TextView
 import com.mundaco.recipepuppy.utils.extension.getParentActivity
+
 
 @BindingAdapter("mutableVisibility")
 fun setMutableVisibility(view: View, visibility: MutableLiveData<Int>?) {
@@ -28,4 +30,9 @@ fun setMutableText(view: TextView, text: MutableLiveData<String>?) {
 @BindingAdapter("adapter")
 fun setAdapter(view: RecyclerView, adapter: RecyclerView.Adapter<*>) {
     view.adapter = adapter
+}
+
+@BindingAdapter("onQueryTextListener")
+fun setOnQueryTextListener(view: SearchView, listener: SearchView.OnQueryTextListener) {
+    view.setOnQueryTextListener(listener)
 }

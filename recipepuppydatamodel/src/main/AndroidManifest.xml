@@ -1,2 +1,1 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.mundaco.recipepuppy.datamodel"/>
+<manifest package="com.mundaco.recipepuppy.datamodel"/>
