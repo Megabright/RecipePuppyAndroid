@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.MenuItem
 import com.mundaco.recipepuppy.R
 import com.mundaco.recipepuppy.databinding.ActivityRecipeDetailBinding
 import com.mundaco.recipepuppy.datamodel.Recipe
@@ -27,5 +28,15 @@ class RecipeDetailActivity : AppCompatActivity() {
         binding.viewModel = viewModel
 
 
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.getItemId()) {
+            android.R.id.home -> {
+                this.finish()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

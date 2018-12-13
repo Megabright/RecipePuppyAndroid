@@ -27,11 +27,11 @@ class RecipeListViewModel(private val recipeDao: RecipeDao) : BaseViewModel() {
     val recipeListAdapter: RecipeListAdapter = RecipeListAdapter()
 
     init {
-        loadRecipes("ab")
+        loadRecipes("")
     }
 
 
-    private fun loadRecipes(query: String) {
+    fun loadRecipes(query: String) {
         subscription = Observable.fromCallable { recipeDao.search(query) }
             .concatMap { dbRecipeList ->
                 if (dbRecipeList.isEmpty())

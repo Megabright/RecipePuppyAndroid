@@ -8,6 +8,7 @@ import android.support.annotation.StringRes
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.widget.SearchView
 import com.mundaco.recipepuppy.R
 import com.mundaco.recipepuppy.databinding.ActivityRecipeListBinding
 import com.mundaco.recipepuppy.injection.ViewModelFactory
@@ -18,6 +19,8 @@ class RecipeListActivity : AppCompatActivity() {
     private lateinit var viewModel: RecipeListViewModel
 
     private var errorSnackbar: Snackbar? = null
+
+    var searchView: SearchView? = null
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
@@ -30,6 +33,19 @@ class RecipeListActivity : AppCompatActivity() {
                 errorMessage -> if(errorMessage != null) showError(errorMessage) else hideError()
         })
         binding.viewModel = viewModel
+
+        searchView = findViewById(R.id.recipe_search)
+        searchView?.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            override fun onQueryTextChange(newText: String): Boolean {
+                viewModel.loadRecipes(searchView?.query.toString())
+                return false
+            }
+
+            override fun onQueryTextSubmit(query: String): Boolean {
+                // task HERE
+                return false
+            }
+        })
     }
 
     private fun showError(@StringRes errorMessage:Int){
