@@ -6,10 +6,6 @@ apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion 28
 
-    dataBinding {
-        enabled = true
-    }
-
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 28
