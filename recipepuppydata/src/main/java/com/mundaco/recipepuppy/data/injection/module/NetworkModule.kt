@@ -26,7 +26,7 @@ object NetworkModule {
         return retrofit.create(RecipeApi::class.java)
     }
 
-    /**
+        /**
      * Provides the Retrofit object.
      * @return the Retrofit object
      */

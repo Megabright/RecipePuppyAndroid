@@ -1,5 +1,6 @@
 package com.mundaco.recipepuppy.ui.recipe
 
+import android.app.Application
 import android.arch.lifecycle.MutableLiveData
 import android.support.v7.widget.SearchView
 import android.view.View
@@ -14,9 +15,13 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class RecipeListViewModel(private val recipeDao: RecipeDao) : BaseViewModel() {
+class RecipeListViewModel(app: Application) : BaseViewModel(app) {
+
     @Inject
     lateinit var recipeApi: RecipeApi
+
+    @Inject
+    lateinit var recipeDao: RecipeDao
 
     val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
 

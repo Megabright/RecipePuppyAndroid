@@ -32,7 +32,7 @@ class RecipeListAdapter: RecyclerView.Adapter<RecipeListAdapter.ViewHolder>() {
     }
 
     class ViewHolder(private val binding: ItemRecipeBinding):RecyclerView.ViewHolder(binding.root){
-        private val viewModel = RecipeViewModel()
+        private val viewModel = RecipeViewModel(this.itemView.getParentActivity()!!.application)
 
         fun bind(recipe:Recipe){
             viewModel.bind(recipe)
