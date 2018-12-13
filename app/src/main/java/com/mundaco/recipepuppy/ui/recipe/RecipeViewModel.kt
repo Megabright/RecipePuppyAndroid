@@ -1,11 +1,10 @@
 package com.mundaco.recipepuppy.ui.recipe
 
-import android.app.Application
 import android.arch.lifecycle.MutableLiveData
 import com.mundaco.recipepuppy.base.BaseViewModel
 import com.mundaco.recipepuppy.datamodel.Recipe
 
-class RecipeViewModel(app: Application): BaseViewModel(app) {
+class RecipeViewModel: BaseViewModel() {
 
     private val recipeTitle = MutableLiveData<String>()
     private val recipeHref = MutableLiveData<String>()

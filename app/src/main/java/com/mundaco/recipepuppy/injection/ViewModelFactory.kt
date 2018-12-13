@@ -12,10 +12,10 @@ class ViewModelFactory(private val activity: AppCompatActivity): ViewModelProvid
         if (modelClass.isAssignableFrom(RecipeListViewModel::class.java)) {
             //val db = Room.databaseBuilder(activity.applicationContext, AppDatabase::class.java, "recipes").build()
             @Suppress("UNCHECKED_CAST")
-            return RecipeListViewModel(activity.application) as T
+            return RecipeListViewModel() as T
         } else if (modelClass.isAssignableFrom(RecipeViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return RecipeViewModel(activity.application) as T
+            return RecipeViewModel() as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
 

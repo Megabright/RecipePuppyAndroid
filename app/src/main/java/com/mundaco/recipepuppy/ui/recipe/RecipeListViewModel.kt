@@ -1,6 +1,5 @@
 package com.mundaco.recipepuppy.ui.recipe
 
-import android.app.Application
 import android.arch.lifecycle.MutableLiveData
 import android.support.v7.widget.SearchView
 import android.view.View
@@ -15,7 +14,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class RecipeListViewModel(app: Application) : BaseViewModel(app) {
+class RecipeListViewModel : BaseViewModel() {
 
     @Inject
     lateinit var recipeApi: RecipeApi
