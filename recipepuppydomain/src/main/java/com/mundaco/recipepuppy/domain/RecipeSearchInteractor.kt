@@ -10,8 +10,7 @@ class RecipeSearchInteractor: RecipeSearchUseCase {
     private val recipeRepository = RecipeRepository()
 
     override fun searchRecipes(query: String): Observable<List<Recipe>> {
-        // TODO: Return Observable with empty list instead
-        return if(query.isEmpty()) Observable.empty()
+        return if(query.isEmpty()) Observable.fromArray(emptyList())
         else recipeRepository.searchRecipes(query)
     }
 
