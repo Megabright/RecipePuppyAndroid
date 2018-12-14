@@ -5,49 +5,48 @@ import android.support.v7.widget.SearchView
 import android.view.View
 import com.mundaco.recipepuppy.R
 import com.mundaco.recipepuppy.base.BaseViewModel
-import com.mundaco.recipepuppy.data.model.RecipeDao
-import com.mundaco.recipepuppy.data.network.RecipeApi
+import com.mundaco.recipepuppy.data.RecipeRepository
+import com.mundaco.recipepuppy.data.RecipeRepositoryDelegate
 import com.mundaco.recipepuppy.datamodel.Recipe
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
-import javax.inject.Inject
 
-class RecipeListViewModel : BaseViewModel() {
+class RecipeListViewModel : BaseViewModel(), RecipeRepositoryDelegate {
 
+    val recipeRepository = RecipeRepository(this)
+
+    /*
     @Inject
     lateinit var recipeApi: RecipeApi
 
     @Inject
     lateinit var recipeDao: RecipeDao
-
+    */
     val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
 
-    private lateinit var subscription: Disposable
+    //private lateinit var subscription: Disposable
 
     val errorMessage: MutableLiveData<Int> = MutableLiveData()
-    val errorClickListener = View.OnClickListener { loadRecipes("") }
+    val errorClickListener = View.OnClickListener { recipeRepository.searchRecipes("") }
 
     val recipeListAdapter: RecipeListAdapter = RecipeListAdapter()
 
     val onQueryTextListener = object: SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
-            loadRecipes(query!!)
+            recipeRepository.searchRecipes(query!!)
             return false
         }
 
         override fun onQueryTextChange(query: String?): Boolean {
-            loadRecipes(query!!)
+            recipeRepository.searchRecipes(query!!)
             return false
         }
     }
 
     init {
-        loadRecipes("")
+        recipeRepository.searchRecipes("")
     }
 
-    private fun loadRecipes(query: String) {
+    /*
+    private fun searchRecipes(query: String) {
 
         if(query.isEmpty()) {
             onRetrieveRecipeListStart()
@@ -76,26 +75,27 @@ class RecipeListViewModel : BaseViewModel() {
                 { onRetrieveRecipeListError() }
             )
     }
+    */
 
-    private fun onRetrieveRecipeListStart() {
+    override fun onRetrieveRecipeListStart() {
         loadingVisibility.value = View.VISIBLE
         errorMessage.value = null
     }
 
-    private fun onRetrieveRecipeListFinish() {
+    override fun onRetrieveRecipeListFinish() {
         loadingVisibility.value = View.GONE
     }
 
-    private fun onRetrieveRecipeListSuccess(recipeList: List<Recipe>) {
+    override fun onRetrieveRecipeListSuccess(recipeList: List<Recipe>) {
         recipeListAdapter.updateRecipeList(recipeList)
     }
 
-    private fun onRetrieveRecipeListError() {
+    override fun onRetrieveRecipeListError() {
         errorMessage.value = R.string.recipe_error
     }
 
     override fun onCleared() {
         super.onCleared()
-        subscription.dispose()
+        recipeRepository.dispose()
     }
 }

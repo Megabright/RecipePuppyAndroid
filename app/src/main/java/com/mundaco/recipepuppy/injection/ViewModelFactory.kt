@@ -13,7 +13,6 @@ class ViewModelFactory(private val context: Context): ViewModelProvider.Factory 
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(RecipeListViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
 
             val recipeListViewModel = RecipeListViewModel()
 
@@ -23,8 +22,9 @@ class ViewModelFactory(private val context: Context): ViewModelProvider.Factory 
                 .daoModule(DaoModule(context))
                 .networkModule(NetworkModule)
                 .build()
-                .inject(recipeListViewModel)
+                .inject(recipeListViewModel.recipeRepository)
 
+            @Suppress("UNCHECKED_CAST")
             return recipeListViewModel as T
 
         } else if (modelClass.isAssignableFrom(RecipeViewModel::class.java)) {

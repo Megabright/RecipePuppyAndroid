@@ -11,7 +11,7 @@ class RecipeViewModel: BaseViewModel() {
     private val recipeIngredients = MutableLiveData<String>()
     private val recipeThumbnail = MutableLiveData<String>()
 
-    fun bind(recipe: Recipe){
+    fun bind(recipe: Recipe) {
         recipeTitle.value = recipe.title
         recipeHref.value = recipe.href
         recipeIngredients.value = recipe.ingredients
