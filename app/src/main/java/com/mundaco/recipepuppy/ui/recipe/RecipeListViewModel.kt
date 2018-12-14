@@ -5,35 +5,35 @@ import android.support.v7.widget.SearchView
 import android.view.View
 import com.mundaco.recipepuppy.R
 import com.mundaco.recipepuppy.base.BaseViewModel
-import com.mundaco.recipepuppy.data.RecipeRepository
-import com.mundaco.recipepuppy.data.RecipeRepositoryDelegate
 import com.mundaco.recipepuppy.data.model.Recipe
+import com.mundaco.recipepuppy.domain.RecipeSearchInteractor
+import com.mundaco.recipepuppy.domain.RecipeSearchUseCaseDelegate
 
-class RecipeListViewModel : BaseViewModel(), RecipeRepositoryDelegate {
+class RecipeListViewModel : BaseViewModel(), RecipeSearchUseCaseDelegate {
 
-    val recipeRepository = RecipeRepository(this)
+    val recipeSearchUseCase = RecipeSearchInteractor(this)
 
     val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
 
     val errorMessage: MutableLiveData<Int> = MutableLiveData()
-    val errorClickListener = View.OnClickListener { recipeRepository.searchRecipes("") }
+    val errorClickListener = View.OnClickListener { recipeSearchUseCase.searchRecipes("") }
 
     val recipeListAdapter: RecipeListAdapter = RecipeListAdapter()
 
     val onQueryTextListener = object: SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
-            recipeRepository.searchRecipes(query!!)
+            recipeSearchUseCase.searchRecipes(query!!)
             return false
         }
 
         override fun onQueryTextChange(query: String?): Boolean {
-            recipeRepository.searchRecipes(query!!)
+            recipeSearchUseCase.searchRecipes(query!!)
             return false
         }
     }
 
     init {
-        recipeRepository.searchRecipes("")
+        recipeSearchUseCase.searchRecipes("")
     }
 
     override fun onRetrieveRecipeListStart() {
@@ -55,6 +55,6 @@ class RecipeListViewModel : BaseViewModel(), RecipeRepositoryDelegate {
 
     override fun onCleared() {
         super.onCleared()
-        recipeRepository.dispose()
+        recipeSearchUseCase.dispose()
     }
 }

@@ -1,0 +1,14 @@
+package com.mundaco.recipepuppy.domain
+
+import com.mundaco.recipepuppy.data.model.Recipe
+
+interface RecipeSearchUseCaseDelegate {
+
+    fun onRetrieveRecipeListStart()
+
+    fun onRetrieveRecipeListFinish()
+
+    fun onRetrieveRecipeListSuccess(recipeList: List<Recipe>)
+
+    fun onRetrieveRecipeListError()
+}

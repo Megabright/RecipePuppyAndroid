@@ -22,7 +22,7 @@ class ViewModelFactory(private val context: Context): ViewModelProvider.Factory 
                 .daoModule(DaoModule(context))
                 .networkModule(NetworkModule)
                 .build()
-                .inject(recipeListViewModel.recipeRepository)
+                .inject(recipeListViewModel.recipeSearchUseCase.getRepository())
 
             @Suppress("UNCHECKED_CAST")
             return recipeListViewModel as T

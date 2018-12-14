@@ -2,30 +2,45 @@ package com.mundaco.recipepuppy.domain
 
 import com.mundaco.recipepuppy.data.RecipeRepository
 import com.mundaco.recipepuppy.data.model.Recipe
+import com.mundaco.recipepuppy.data.utils.SingletonHolder
 
-class RecipeSearchInteractor : RecipeSearchUseCase {
+class RecipeSearchInteractor constructor(delegate: RecipeSearchUseCaseDelegate) : RecipeSearchUseCase {
 
-    val recipeRepository = RecipeRepository(this)
+    var delegate: RecipeSearchUseCaseDelegate? = null
+
+    private val recipeRepository = RecipeRepository(this)
+
+
+    init {
+        this.delegate = delegate
+    }
+    companion object : SingletonHolder<RecipeSearchInteractor, RecipeSearchUseCaseDelegate>(::RecipeSearchInteractor)
+
+    override fun getRepository(): RecipeRepository {
+        return recipeRepository
+    }
 
     override fun searchRecipes(query: String) {
-
+        recipeRepository.searchRecipes(query)
     }
 
     override fun onRetrieveRecipeListStart() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        delegate!!.onRetrieveRecipeListStart()
     }
 
     override fun onRetrieveRecipeListFinish() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        delegate!!.onRetrieveRecipeListFinish()
     }
 
     override fun onRetrieveRecipeListSuccess(recipeList: List<Recipe>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        delegate!!.onRetrieveRecipeListSuccess(recipeList)
     }
 
     override fun onRetrieveRecipeListError() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        delegate!!.onRetrieveRecipeListError()
     }
 
-
+    override fun dispose() {
+        recipeRepository.dispose()
+    }
 }
