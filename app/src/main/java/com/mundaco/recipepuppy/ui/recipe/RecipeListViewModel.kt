@@ -7,54 +7,68 @@ import com.mundaco.recipepuppy.R
 import com.mundaco.recipepuppy.base.BaseViewModel
 import com.mundaco.recipepuppy.data.model.Recipe
 import com.mundaco.recipepuppy.domain.RecipeSearchInteractor
-import com.mundaco.recipepuppy.domain.RecipeSearchUseCaseDelegate
+import io.reactivex.disposables.Disposable
 
-class RecipeListViewModel : BaseViewModel(), RecipeSearchUseCaseDelegate {
+class RecipeListViewModel : BaseViewModel() {
 
-    val recipeSearchUseCase = RecipeSearchInteractor(this)
+    private lateinit var subscription: Disposable
+
+    val recipeSearchUseCase = RecipeSearchInteractor()
 
     val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
 
     val errorMessage: MutableLiveData<Int> = MutableLiveData()
-    val errorClickListener = View.OnClickListener { recipeSearchUseCase.searchRecipes("") }
+    val errorClickListener = View.OnClickListener { searchRecipes("") }
 
     val recipeListAdapter: RecipeListAdapter = RecipeListAdapter()
 
     val onQueryTextListener = object: SearchView.OnQueryTextListener {
+
         override fun onQueryTextSubmit(query: String?): Boolean {
-            recipeSearchUseCase.searchRecipes(query!!)
+            searchRecipes(query!!)
             return false
         }
 
         override fun onQueryTextChange(query: String?): Boolean {
-            recipeSearchUseCase.searchRecipes(query!!)
+            searchRecipes(query!!)
             return false
         }
     }
 
     init {
-        recipeSearchUseCase.searchRecipes("")
+        searchRecipes("")
     }
 
-    override fun onRetrieveRecipeListStart() {
+    fun searchRecipes(query: String) {
+
+        subscription = recipeSearchUseCase.searchRecipes(query)
+            .doOnSubscribe { onRetrieveRecipeListStart() }
+            .doOnTerminate { onRetrieveRecipeListFinish() }
+            .subscribe(
+                { result -> onRetrieveRecipeListSuccess(result) },
+                { onRetrieveRecipeListError() }
+            )
+    }
+
+    private fun onRetrieveRecipeListStart() {
         loadingVisibility.value = View.VISIBLE
         errorMessage.value = null
     }
 
-    override fun onRetrieveRecipeListFinish() {
+    private fun onRetrieveRecipeListFinish() {
         loadingVisibility.value = View.GONE
     }
 
-    override fun onRetrieveRecipeListSuccess(recipeList: List<Recipe>) {
+    private fun onRetrieveRecipeListSuccess(recipeList: List<Recipe>) {
         recipeListAdapter.updateRecipeList(recipeList)
     }
 
-    override fun onRetrieveRecipeListError() {
+    private fun onRetrieveRecipeListError() {
         errorMessage.value = R.string.recipe_error
     }
 
     override fun onCleared() {
         super.onCleared()
-        recipeSearchUseCase.dispose()
+        subscription.dispose()
     }
 }

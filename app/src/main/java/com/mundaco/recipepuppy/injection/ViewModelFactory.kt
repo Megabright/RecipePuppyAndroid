@@ -16,6 +16,7 @@ class ViewModelFactory(private val context: Context): ViewModelProvider.Factory 
 
             val recipeListViewModel = RecipeListViewModel()
 
+            // TODO: Is this is ugly?
             // Dependency Injection
             DaggerRepositoryInjector
                 .builder()
