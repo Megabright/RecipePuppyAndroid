@@ -1,4 +1,4 @@
-package com.mundaco.recipepuppy.injection.component
+package com.mundaco.recipepuppy.data.injection.component
 
 import com.mundaco.recipepuppy.data.RecipeRepository
 import com.mundaco.recipepuppy.data.injection.module.DaoModule
@@ -8,13 +8,13 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(modules = [NetworkModule::class, DaoModule::class])
-interface ViewModelInjector {
+interface RepositoryInjector {
 
     fun inject(recipeRepository: RecipeRepository)
 
     @Component.Builder
     interface Builder {
-        fun build(): ViewModelInjector
+        fun build(): RepositoryInjector
 
         fun daoModule(daoModule: DaoModule): Builder
         fun networkModule(networkModule: NetworkModule): Builder

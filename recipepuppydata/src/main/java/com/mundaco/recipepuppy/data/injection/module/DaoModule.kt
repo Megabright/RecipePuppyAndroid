@@ -2,8 +2,8 @@ package com.mundaco.recipepuppy.data.injection.module
 
 import android.arch.persistence.room.Room
 import android.content.Context
-import com.mundaco.recipepuppy.data.model.RecipeDao
-import com.mundaco.recipepuppy.data.model.database.AppDatabase
+import com.mundaco.recipepuppy.data.database.AppDatabase
+import com.mundaco.recipepuppy.data.database.RecipeDao
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

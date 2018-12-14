@@ -1,1 +1,1 @@
-include ':app', ':recipepuppydomain', ':recipepuppydata', ':recipepuppydatamodel'
+include ':app', ':recipepuppydomain', ':recipepuppydata'

@@ -1,10 +1,10 @@
-package com.mundaco.recipepuppy.data.model
+package com.mundaco.recipepuppy.data.database
 
 import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
-import com.mundaco.recipepuppy.datamodel.Recipe
+import com.mundaco.recipepuppy.data.model.Recipe
 
 @Dao
 interface RecipeDao {

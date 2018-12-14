@@ -1,4 +1,4 @@
-package com.mundaco.recipepuppy.datamodel
+package com.mundaco.recipepuppy.data.model
 
 data class RecipeResponse(
     val title: String,

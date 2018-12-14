@@ -1,6 +1,6 @@
 package com.mundaco.recipepuppy.data
 
-import com.mundaco.recipepuppy.data.model.RecipeDao
+import com.mundaco.recipepuppy.data.database.RecipeDao
 import com.mundaco.recipepuppy.data.network.RecipeApi
 import com.mundaco.recipepuppy.data.utils.SingletonHolder
 import io.reactivex.Observable

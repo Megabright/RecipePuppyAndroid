@@ -6,8 +6,8 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import com.mundaco.recipepuppy.R
+import com.mundaco.recipepuppy.data.model.Recipe
 import com.mundaco.recipepuppy.databinding.ActivityRecipeDetailBinding
-import com.mundaco.recipepuppy.datamodel.Recipe
 import com.mundaco.recipepuppy.injection.ViewModelFactory
 
 class RecipeDetailActivity : AppCompatActivity() {

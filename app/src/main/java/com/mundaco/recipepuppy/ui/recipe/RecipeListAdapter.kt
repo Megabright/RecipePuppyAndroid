@@ -6,8 +6,8 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.mundaco.recipepuppy.R
+import com.mundaco.recipepuppy.data.model.Recipe
 import com.mundaco.recipepuppy.databinding.ItemRecipeBinding
-import com.mundaco.recipepuppy.datamodel.Recipe
 import com.mundaco.recipepuppy.utils.extension.getParentActivity
 
 class RecipeListAdapter: RecyclerView.Adapter<RecipeListAdapter.ViewHolder>() {
@@ -34,7 +34,7 @@ class RecipeListAdapter: RecyclerView.Adapter<RecipeListAdapter.ViewHolder>() {
     class ViewHolder(private val binding: ItemRecipeBinding):RecyclerView.ViewHolder(binding.root){
         private val viewModel = RecipeViewModel()
 
-        fun bind(recipe:Recipe){
+        fun bind(recipe: Recipe){
             viewModel.bind(recipe)
 
             //

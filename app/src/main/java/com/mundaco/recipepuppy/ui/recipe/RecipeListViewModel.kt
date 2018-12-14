@@ -7,22 +7,13 @@ import com.mundaco.recipepuppy.R
 import com.mundaco.recipepuppy.base.BaseViewModel
 import com.mundaco.recipepuppy.data.RecipeRepository
 import com.mundaco.recipepuppy.data.RecipeRepositoryDelegate
-import com.mundaco.recipepuppy.datamodel.Recipe
+import com.mundaco.recipepuppy.data.model.Recipe
 
 class RecipeListViewModel : BaseViewModel(), RecipeRepositoryDelegate {
 
     val recipeRepository = RecipeRepository(this)
 
-    /*
-    @Inject
-    lateinit var recipeApi: RecipeApi
-
-    @Inject
-    lateinit var recipeDao: RecipeDao
-    */
     val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
-
-    //private lateinit var subscription: Disposable
 
     val errorMessage: MutableLiveData<Int> = MutableLiveData()
     val errorClickListener = View.OnClickListener { recipeRepository.searchRecipes("") }
@@ -44,38 +35,6 @@ class RecipeListViewModel : BaseViewModel(), RecipeRepositoryDelegate {
     init {
         recipeRepository.searchRecipes("")
     }
-
-    /*
-    private fun searchRecipes(query: String) {
-
-        if(query.isEmpty()) {
-            onRetrieveRecipeListStart()
-            onRetrieveRecipeListSuccess(emptyList())
-            onRetrieveRecipeListFinish()
-            return
-        }
-
-        subscription = Observable.fromCallable { recipeDao.search(query) }
-            .concatMap { dbRecipeList ->
-                if (dbRecipeList.isEmpty())
-                    recipeApi.getRecipeResponse(query).concatMap {
-                            apiRecipeResponse ->
-                        recipeDao.insertAll(*apiRecipeResponse.results.toTypedArray())
-                        Observable.just(apiRecipeResponse.results)
-                    }
-                else
-                    Observable.just(dbRecipeList)
-            }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { onRetrieveRecipeListStart() }
-            .doOnTerminate { onRetrieveRecipeListFinish() }
-            .subscribe(
-                { result -> onRetrieveRecipeListSuccess(result) },
-                { onRetrieveRecipeListError() }
-            )
-    }
-    */
 
     override fun onRetrieveRecipeListStart() {
         loadingVisibility.value = View.VISIBLE
