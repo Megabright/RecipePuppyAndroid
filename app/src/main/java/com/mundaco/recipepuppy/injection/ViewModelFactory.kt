@@ -3,6 +3,7 @@ package com.mundaco.recipepuppy.injection
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import android.content.Context
+import com.mundaco.recipepuppy.data.RecipeRepositoryImpl
 import com.mundaco.recipepuppy.injection.component.DaggerRepositoryInjector
 import com.mundaco.recipepuppy.injection.module.DaoModule
 import com.mundaco.recipepuppy.ui.recipe.RecipeListViewModel
@@ -13,15 +14,15 @@ class ViewModelFactory(private val context: Context): ViewModelProvider.Factory 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(RecipeListViewModel::class.java)) {
 
-            val recipeListViewModel = RecipeListViewModel()
+            val recipeRepository = RecipeRepositoryImpl()
+            val recipeListViewModel = RecipeListViewModel(recipeRepository)
 
-            // TODO: Is this is ugly?
             // Dependency Injection
             DaggerRepositoryInjector
                 .builder()
                 .daoModule(DaoModule(context))
                 .build()
-                .inject(recipeListViewModel.recipeSearchUseCase.getRepository())
+                .inject(recipeRepository)
 
             @Suppress("UNCHECKED_CAST")
             return recipeListViewModel as T

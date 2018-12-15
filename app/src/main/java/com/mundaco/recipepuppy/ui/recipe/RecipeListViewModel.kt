@@ -5,17 +5,18 @@ import android.support.v7.widget.SearchView
 import android.view.View
 import com.mundaco.recipepuppy.R
 import com.mundaco.recipepuppy.base.BaseViewModel
+import com.mundaco.recipepuppy.data.RecipeRepository
 import com.mundaco.recipepuppy.data.model.Recipe
 import com.mundaco.recipepuppy.domain.RecipeSearchInteractor
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
-class RecipeListViewModel : BaseViewModel() {
+class RecipeListViewModel(recipeRepository: RecipeRepository) : BaseViewModel() {
 
     lateinit var subscription: Disposable
 
-    val recipeSearchUseCase = RecipeSearchInteractor()
+    val recipeSearchUseCase = RecipeSearchInteractor(recipeRepository)
 
     val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
 

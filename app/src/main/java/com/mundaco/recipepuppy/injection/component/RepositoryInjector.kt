@@ -1,6 +1,6 @@
 package com.mundaco.recipepuppy.injection.component
 
-import com.mundaco.recipepuppy.data.RecipeRepository
+import com.mundaco.recipepuppy.data.RecipeRepositoryImpl
 import com.mundaco.recipepuppy.injection.module.DaoModule
 import dagger.Component
 import javax.inject.Singleton
@@ -9,7 +9,7 @@ import javax.inject.Singleton
 @Component(modules = [DaoModule::class])
 interface RepositoryInjector {
 
-    fun inject(recipeRepository: RecipeRepository)
+    fun inject(recipeRepository: RecipeRepositoryImpl)
 
     @Component.Builder
     interface Builder {
