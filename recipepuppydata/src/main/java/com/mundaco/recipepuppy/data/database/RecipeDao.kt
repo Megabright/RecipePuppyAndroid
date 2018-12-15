@@ -12,6 +12,6 @@ interface RecipeDao {
     fun search(query: String): List<Recipe>
 
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg recipes: Recipe)
 }

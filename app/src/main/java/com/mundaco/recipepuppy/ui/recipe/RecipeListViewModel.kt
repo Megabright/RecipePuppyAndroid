@@ -7,7 +7,9 @@ import com.mundaco.recipepuppy.R
 import com.mundaco.recipepuppy.base.BaseViewModel
 import com.mundaco.recipepuppy.data.model.Recipe
 import com.mundaco.recipepuppy.domain.RecipeSearchInteractor
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 
 class RecipeListViewModel : BaseViewModel() {
 
@@ -36,12 +38,14 @@ class RecipeListViewModel : BaseViewModel() {
     }
 
     init {
-        searchRecipes("")
+        
     }
 
     fun searchRecipes(query: String) {
 
         subscription = recipeSearchUseCase.searchRecipes(query)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { onRetrieveRecipeListStart() }
             .doOnTerminate { onRetrieveRecipeListFinish() }
             .subscribe(
