@@ -16,7 +16,7 @@ class RecipeListViewModel(recipeRepository: RecipeRepository) : BaseViewModel() 
 
     lateinit var subscription: Disposable
 
-    val recipeSearchUseCase = RecipeSearchInteractor(recipeRepository)
+    private val recipeSearchUseCase = RecipeSearchInteractor(recipeRepository)
 
     val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
 
