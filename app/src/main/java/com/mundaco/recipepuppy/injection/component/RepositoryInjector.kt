@@ -1,7 +1,7 @@
-package com.mundaco.recipepuppy.data.injection.component
+package com.mundaco.recipepuppy.injection.component
 
 import com.mundaco.recipepuppy.data.RecipeRepository
-import com.mundaco.recipepuppy.data.injection.module.DaoModule
+import com.mundaco.recipepuppy.injection.module.DaoModule
 import dagger.Component
 import javax.inject.Singleton
 
