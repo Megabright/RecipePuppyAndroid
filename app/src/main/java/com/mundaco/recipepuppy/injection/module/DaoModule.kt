@@ -1,4 +1,4 @@
-package com.mundaco.recipepuppy.data.injection.module
+package com.mundaco.recipepuppy.injection.module
 
 import android.arch.persistence.room.Room
 import android.content.Context

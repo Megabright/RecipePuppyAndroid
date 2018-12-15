@@ -13,7 +13,7 @@ import io.reactivex.schedulers.Schedulers
 
 class RecipeListViewModel : BaseViewModel() {
 
-    private lateinit var subscription: Disposable
+    lateinit var subscription: Disposable
 
     val recipeSearchUseCase = RecipeSearchInteractor()
 
@@ -35,10 +35,6 @@ class RecipeListViewModel : BaseViewModel() {
             searchRecipes(query!!)
             return false
         }
-    }
-
-    init {
-        
     }
 
     fun searchRecipes(query: String) {
