@@ -14,7 +14,4 @@ class RecipeSearchInteractor(val recipeRepository: RecipeRepository): RecipeSear
         else recipeRepository.searchRecipes(query)
     }
 
-    override fun getRepository(): RecipeRepository {
-        return recipeRepository
-    }
 }
