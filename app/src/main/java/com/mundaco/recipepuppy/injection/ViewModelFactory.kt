@@ -14,7 +14,7 @@ class ViewModelFactory(private val context: Context): ViewModelProvider.Factory 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(RecipeListViewModel::class.java)) {
 
-            val recipeRepository = RecipeRepositoryImpl()
+            val recipeRepository = RecipeRepositoryImpl.getInstance()
             val recipeListViewModel = RecipeListViewModel(recipeRepository)
 
             // Dependency Injection
