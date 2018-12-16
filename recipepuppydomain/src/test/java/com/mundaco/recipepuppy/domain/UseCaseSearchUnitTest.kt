@@ -2,53 +2,53 @@ package com.mundaco.recipepuppy.domain
 
 import com.mundaco.recipepuppy.data.RecipeRepository
 import com.mundaco.recipepuppy.data.model.Recipe
+import com.mundaco.recipepuppy.domain.rules.RxImmediateSchedulerRule
 import io.reactivex.Observable
-import io.reactivex.android.plugins.RxAndroidPlugins
 import io.reactivex.observers.TestObserver
-import io.reactivex.plugins.RxJavaPlugins
-import io.reactivex.schedulers.Schedulers
-import org.junit.After
+import org.hamcrest.CoreMatchers.`is`
+import org.junit.Assert.assertThat
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mock
+import org.mockito.Mockito
+import org.mockito.junit.MockitoJUnit
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
 class UseCaseSearchUnitTest {
 
+    @Rule
+    @JvmField
+    val rule = MockitoJUnit.rule()!!
+
+    @Rule @JvmField var testSchedulerRule = RxImmediateSchedulerRule()
+
+
     // Helpers
+    @Mock
+    lateinit var recipeRepository: RecipeRepository
 
-    class MockRecipeRepositoryImpl: RecipeRepository {
+    var result = arrayListOf<Recipe>()
 
-        // Singleton
-        companion object {
+    internal lateinit var sut: RecipeSearchUseCase
 
-            private var INSTANCE: MockRecipeRepositoryImpl? = null
-
-            fun getInstance(): MockRecipeRepositoryImpl {
-                if(INSTANCE == null) INSTANCE = MockRecipeRepositoryImpl()
-                return INSTANCE!!
-            }
-        }
-
-        override fun searchRecipes(query: String): Observable<List<Recipe>> {
-            return Observable.fromArray(emptyList())
-        }
-
-
-    }
-
-    val recipeRepository = MockRecipeRepositoryImpl.getInstance()
-
-
-    val sut: RecipeSearchUseCase = RecipeSearchInteractor(recipeRepository)
-
+    // Tests
     @Before
     fun setUp() {
-        RxJavaPlugins.setIoSchedulerHandler { Schedulers.trampoline() }
-        RxJavaPlugins.setComputationSchedulerHandler { Schedulers.trampoline() }
-        RxJavaPlugins.setNewThreadSchedulerHandler { Schedulers.trampoline() }
-        RxAndroidPlugins.setInitMainThreadSchedulerHandler { Schedulers.trampoline() }
+
+        sut = RecipeSearchInteractor(recipeRepository)
+
+
+        result.add(Recipe("a","","",""))
+
+        Mockito.`when`(recipeRepository.searchRecipes("")).thenReturn(
+            Observable.just(emptyList())
+        )
+        Mockito.`when`(recipeRepository.searchRecipes("a")).thenReturn(
+            Observable.just(result)
+        )
     }
 
     @Test
@@ -56,18 +56,29 @@ class UseCaseSearchUnitTest {
 
         val result = sut.searchRecipes("")
 
-        result.subscribe(TestObserver<List<Recipe>>()
-            .assertComplete()
-            .assertNoErrors()
-            //.assertValueCount(1)
-            //.assertValue(emptyList())
-        )
+        val testObserver = TestObserver<List<Recipe>>()
+        result.subscribe(testObserver)
 
-
+        testObserver.assertComplete()
+        testObserver.assertNoErrors()
+        testObserver.assertValueCount(1)
+        testObserver.assertValue(emptyList())
     }
 
-    @After
-    fun dispose() {
+    @Test
+    fun search_whenNonEmptyQuery_ReturnsNonEmptyList() {
 
+        val result = sut.searchRecipes("a")
+
+        val testObserver = TestObserver<List<Recipe>>()
+        result.subscribe(testObserver)
+
+        testObserver.assertComplete()
+        testObserver.assertNoErrors()
+        testObserver.assertValueCount(1)
+
+        val listResult = testObserver.values()[0]
+        assertThat(listResult.size, `is`(1))
+        assertThat(listResult[0].title, `is`("a"))
     }
 }
