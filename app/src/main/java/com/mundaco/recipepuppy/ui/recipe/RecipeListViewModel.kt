@@ -23,6 +23,7 @@ class RecipeListViewModel(recipeRepository: RecipeRepository) : BaseViewModel() 
     val errorMessage: MutableLiveData<Int> = MutableLiveData()
     val errorClickListener = View.OnClickListener { searchRecipes("") }
 
+    // TODO: The ViewModel shouldn't depend on the List Adapter like this
     val recipeListAdapter: RecipeListAdapter = RecipeListAdapter()
 
     val onQueryTextListener = object: SearchView.OnQueryTextListener {
