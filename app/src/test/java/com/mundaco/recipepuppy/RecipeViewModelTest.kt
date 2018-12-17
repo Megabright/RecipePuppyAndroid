@@ -66,7 +66,7 @@ class RecipeViewModelTest {
     @Test
     fun text_onQueryTextChanged_withNonEmptyString_YieldsNonEmptyListAdapter() {
 
-        sut.onQueryTextListener.onQueryTextChange("a")
+        sut.onQueryTextListener.onQueryTextChange("ap")
 
         assertThat(sut.recipeListAdapter.itemCount, `is`(1))
 
