@@ -38,7 +38,7 @@ class RecipeListViewModel(recipeRepository: RecipeRepository) : BaseViewModel() 
         }
     }
 
-    fun searchRecipes(query: String) {
+    private fun searchRecipes(query: String) {
 
         subscription = recipeSearchUseCase.searchRecipes(query)
             .subscribeOn(Schedulers.io())

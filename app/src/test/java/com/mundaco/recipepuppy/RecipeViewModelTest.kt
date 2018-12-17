@@ -54,18 +54,19 @@ class RecipeViewModelTest {
     }
 
     @Test
-    fun text_search_whenEmptyString_YieldsEmptyListAdapter() {
+    fun text_onQueryTextChanged_withEmptyString_YieldsEmptyListAdapter() {
 
-        sut.searchRecipes("")
+        sut.onQueryTextListener.onQueryTextChange("")
+
 
         assertThat(sut.recipeListAdapter.itemCount, `is`(0))
 
     }
 
     @Test
-    fun text_search_whenNonEmptyString_YieldsNonEmptyListAdapter() {
+    fun text_onQueryTextChanged_withNonEmptyString_YieldsNonEmptyListAdapter() {
 
-        sut.searchRecipes("a")
+        sut.onQueryTextListener.onQueryTextChange("a")
 
         assertThat(sut.recipeListAdapter.itemCount, `is`(1))
 
