@@ -8,6 +8,7 @@ import com.mundaco.recipepuppy.ui.recipe.RecipeListViewModel
 import io.reactivex.Observable
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
+import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -69,6 +70,15 @@ class RecipeViewModelTest {
         sut.onQueryTextListener.onQueryTextChange("a")
 
         assertThat(sut.recipeListAdapter.itemCount, `is`(1))
+
+    }
+
+    @Test
+    fun text_onQueryTextChanged_withValidString_setsErrorMessageValueToNull() {
+
+        sut.onQueryTextListener.onQueryTextChange("a")
+
+        assertNull(sut.errorMessage.value)
 
     }
 }
