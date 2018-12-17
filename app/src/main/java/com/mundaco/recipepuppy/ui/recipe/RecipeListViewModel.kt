@@ -14,7 +14,7 @@ import io.reactivex.schedulers.Schedulers
 
 class RecipeListViewModel(recipeRepository: RecipeRepository) : BaseViewModel() {
 
-    lateinit var subscription: Disposable
+    private lateinit var subscription: Disposable
 
     private val recipeSearchUseCase = RecipeSearchInteractor(recipeRepository)
 

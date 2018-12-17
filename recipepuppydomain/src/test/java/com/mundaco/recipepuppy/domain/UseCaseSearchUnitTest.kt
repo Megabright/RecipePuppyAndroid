@@ -10,27 +10,23 @@ import org.junit.Assert.assertThat
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnit
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
 class UseCaseSearchUnitTest {
 
     @Rule
     @JvmField
     val rule = MockitoJUnit.rule()!!
 
-    @Rule @JvmField var testSchedulerRule = RxImmediateSchedulerRule()
-
+    @Rule
+    @JvmField
+    var testSchedulerRule = RxImmediateSchedulerRule()
 
     // Helpers
     @Mock
     lateinit var recipeRepository: RecipeRepository
-
-    var result = arrayListOf<Recipe>()
 
     internal lateinit var sut: RecipeSearchUseCase
 
@@ -38,17 +34,16 @@ class UseCaseSearchUnitTest {
     @Before
     fun setUp() {
 
-        sut = RecipeSearchInteractor(recipeRepository)
-
-
-        result.add(Recipe("a","","",""))
-
+        val recipeList = arrayListOf<Recipe>()
+        recipeList.add(Recipe("a","","",""))
         Mockito.`when`(recipeRepository.searchRecipes("")).thenReturn(
             Observable.just(emptyList())
         )
         Mockito.`when`(recipeRepository.searchRecipes("a")).thenReturn(
-            Observable.just(result)
+            Observable.just(recipeList)
         )
+
+        sut = RecipeSearchInteractor(recipeRepository)
     }
 
     @Test
