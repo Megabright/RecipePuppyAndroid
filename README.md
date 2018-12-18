@@ -1,7 +1,7 @@
 
 RecipePuppy Application for Android
 
-Clean Arquitecture with MVVM (Model-View-ViewModel) design pattern.
+Clean Architecture with MVVM (Model-View-ViewModel) design pattern.
 
 100% Kotlin
 
@@ -11,3 +11,4 @@ Features:
   - Persistance (Room)
   - Observable Streams (ReactiveX)
   - RESTful API HTTP Client (Retrofit2)
+  - ViewModel and Use Cases Unit Tests
