@@ -18,6 +18,8 @@ class RecipeListViewModel(recipeRepository: RecipeRepository) : BaseViewModel() 
 
     private val recipeSearchUseCase = RecipeSearchInteractor(recipeRepository)
 
+    val recipeList: MutableLiveData<List<Recipe>> = MutableLiveData()
+
     val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
 
     val errorMessage: MutableLiveData<Int> = MutableLiveData()
@@ -34,9 +36,6 @@ class RecipeListViewModel(recipeRepository: RecipeRepository) : BaseViewModel() 
             return false
         }
     }
-
-    val recipeList: MutableLiveData<List<Recipe>> = MutableLiveData()
-
 
     private fun searchRecipes(query: String) {
 

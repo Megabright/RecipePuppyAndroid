@@ -33,5 +33,4 @@ class RecipeViewModel: BaseViewModel() {
     fun getRecipeThumbnail():MutableLiveData<String>{
         return recipeThumbnail
     }
-
 }
