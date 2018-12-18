@@ -15,6 +15,7 @@ import org.junit.Test
 import org.junit.rules.TestRule
 import org.mockito.Mock
 import org.mockito.Mockito
+import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnit
 
 
@@ -43,10 +44,13 @@ class RecipeViewModelTest {
     fun setUp() {
 
         val recipeList = arrayListOf<Recipe>()
-        recipeList.add(Recipe("test","test","test","test"))
-        Mockito.`when`(recipeRepository.searchRecipes(Mockito.anyString())).thenReturn(
-            Observable.just(recipeList)
-        )
+        recipeList.add(Recipe("This is a test title","test","test","test"))
+
+        `when`(recipeRepository.searchRecipes(Mockito.anyString())).thenAnswer { invocation ->
+            Observable.just(recipeList.filter { recipe ->
+                recipe.title.contains(invocation.getArgument<String>(0))
+            })
+        }
 
         sut = RecipeListViewModel(recipeRepository)
     }
@@ -64,7 +68,7 @@ class RecipeViewModelTest {
     @Test
     fun onQueryTextChanged_withNonEmptyString_YieldsNonEmptyListAdapter() {
 
-        sut.onQueryTextListener.onQueryTextChange("a")
+        sut.onQueryTextListener.onQueryTextChange("test")
 
         assertThat(sut.recipeList.value!!.size, `is`(1))
 
@@ -73,7 +77,7 @@ class RecipeViewModelTest {
     @Test
     fun onQueryTextChanged_withValidString_setsErrorMessageValueToNull() {
 
-        sut.onQueryTextListener.onQueryTextChange("¡")
+        sut.onQueryTextListener.onQueryTextChange("test")
 
         assertThat(sut.errorMessage.value, nullValue())
     }
