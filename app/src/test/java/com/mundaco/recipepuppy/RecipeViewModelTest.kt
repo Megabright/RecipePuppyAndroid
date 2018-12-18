@@ -1,6 +1,7 @@
 package com.mundaco.recipepuppy
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
+import android.view.View
 import com.mundaco.recipepuppy.data.RecipeRepository
 import com.mundaco.recipepuppy.data.model.Recipe
 import com.mundaco.recipepuppy.rules.RxImmediateSchedulerRule
@@ -56,7 +57,7 @@ class RecipeViewModelTest {
     }
 
     @Test
-    fun onQueryTextChanged_withEmptyString_YieldsEmptyListAdapter() {
+    fun onQueryTextChanged_withEmptyQuery_YieldsEmptyRecipeList() {
 
         sut.onQueryTextListener.onQueryTextChange("")
 
@@ -66,7 +67,7 @@ class RecipeViewModelTest {
     }
 
     @Test
-    fun onQueryTextChanged_withNonEmptyString_YieldsNonEmptyListAdapter() {
+    fun onQueryTextChanged_withNonEmptyQuery_YieldsNonEmptyRecipeList() {
 
         sut.onQueryTextListener.onQueryTextChange("test")
 
@@ -75,10 +76,35 @@ class RecipeViewModelTest {
     }
 
     @Test
-    fun onQueryTextChanged_withValidString_setsErrorMessageValueToNull() {
+    fun onQueryTextChanged_withEmptyQuery_hidesLoadingIndicator() {
+
+        sut.onQueryTextListener.onQueryTextChange("")
+
+        assertThat(sut.loadingVisibility.value, `is`(View.GONE))
+    }
+
+    @Test
+    fun onQueryTextChanged_withNonEmptyQuery_setsErrorMessageValueToNull() {
 
         sut.onQueryTextListener.onQueryTextChange("test")
 
         assertThat(sut.errorMessage.value, nullValue())
     }
+
+    @Test
+    fun onQueryTextChanged_withEmptyQuery_setsErrorMessageValueToNull() {
+
+        sut.onQueryTextListener.onQueryTextChange("")
+
+        assertThat(sut.errorMessage.value, nullValue())
+    }
+
+    @Test
+    fun onQueryTextChanged_withNonEmptyQuery_hidesLoadingIndicator() {
+
+        sut.onQueryTextListener.onQueryTextChange("test")
+
+        assertThat(sut.loadingVisibility.value, `is`(View.GONE))
+    }
+
 }
