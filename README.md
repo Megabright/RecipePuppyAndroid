@@ -6,8 +6,8 @@ Clean Arquitecture with MVVM (Model-View-ViewModel) design pattern.
 100% Kotlin
 
 Features:
-  - DataBinding
+  - DataBinding + LiveData
   - Dependency Injection (Dagger2)
   - Persistance (Room)
-  - Observables (ReactiveX, LiveData)
+  - Observable Streams (ReactiveX)
   - RESTful API HTTP Client (Retrofit2)
