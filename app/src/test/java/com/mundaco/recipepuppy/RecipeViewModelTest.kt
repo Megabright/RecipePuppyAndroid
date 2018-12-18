@@ -38,6 +38,7 @@ class RecipeViewModelTest {
     @Mock
     lateinit var recipeRepository: RecipeRepository
 
+    @Mock
     private lateinit var sut: RecipeListViewModel
 
     // Tests
@@ -60,7 +61,6 @@ class RecipeViewModelTest {
     fun onQueryTextChanged_withEmptyQuery_YieldsEmptyRecipeList() {
 
         sut.onQueryTextListener.onQueryTextChange("")
-
 
         assertThat(sut.recipeList.value!!.size, `is`(0))
 
