@@ -5,12 +5,6 @@
         <variable
                 name="viewModel"
                 type="com.mundaco.recipepuppy.ui.recipe.RecipeListViewModel" />
-        <variable
-                name="recipeListAdapter"
-                type="com.mundaco.recipepuppy.ui.recipe.RecipeListAdapter" />
-        <variable
-                name="onQueryTextListener"
-                type="com.mundaco.recipepuppy.ui.recipe.RecipeListActivity.OnQueryTextListener" />
     </data>
     <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -31,7 +25,7 @@
                 android:id="@+id/recipe_search"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:onQueryTextListener="@{onQueryTextListener}"
+                app:onQueryTextListener="@{viewModel.onQueryTextListener}"
                 />
 
 
@@ -39,7 +33,6 @@
                 android:id="@+id/recipe_list"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:adapter="@{recipeListAdapter}"
                 app:mutableRecipeList="@{viewModel.getRecipeList()}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"

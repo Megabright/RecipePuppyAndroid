@@ -8,7 +8,6 @@ import android.support.annotation.StringRes
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.SearchView
 import com.mundaco.recipepuppy.R
 import com.mundaco.recipepuppy.databinding.ActivityRecipeListBinding
 import com.mundaco.recipepuppy.injection.ViewModelFactory
@@ -25,16 +24,13 @@ class RecipeListActivity : AppCompatActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_recipe_list)
         binding.recipeList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.recipeList.adapter = RecipeListAdapter()
 
         viewModel = ViewModelProviders.of(this, ViewModelFactory(applicationContext)).get(RecipeListViewModel::class.java)
         viewModel.errorMessage.observe(this, Observer {
                 errorMessage -> if(errorMessage != null) showError(errorMessage) else hideError()
         })
         binding.viewModel = viewModel
-
-        binding.recipeListAdapter = RecipeListAdapter()
-
-        binding.onQueryTextListener = OnQueryTextListener(viewModel)
     }
 
     private fun showError(@StringRes errorMessage:Int){
@@ -47,16 +43,5 @@ class RecipeListActivity : AppCompatActivity() {
         errorSnackBar?.dismiss()
     }
 
-    // SearchView Listener
-    class OnQueryTextListener(val viewModel: RecipeListViewModel) : SearchView.OnQueryTextListener {
-        override fun onQueryTextSubmit(query: String?): Boolean {
-            viewModel.searchRecipes(query!!)
-            return false
-        }
 
-        override fun onQueryTextChange(query: String?): Boolean {
-            viewModel.searchRecipes(query!!)
-            return false
-        }
-    }
 }
