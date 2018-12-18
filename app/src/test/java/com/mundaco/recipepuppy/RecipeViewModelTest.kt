@@ -43,11 +43,8 @@ class RecipeViewModelTest {
     fun setUp() {
 
         val recipeList = arrayListOf<Recipe>()
-        recipeList.add(Recipe("a","","",""))
-        Mockito.`when`(recipeRepository.searchRecipes("")).thenReturn(
-            Observable.just(emptyList())
-        )
-        Mockito.`when`(recipeRepository.searchRecipes("a")).thenReturn(
+        recipeList.add(Recipe("test","test","test","test"))
+        Mockito.`when`(recipeRepository.searchRecipes(Mockito.anyString())).thenReturn(
             Observable.just(recipeList)
         )
 
@@ -55,7 +52,7 @@ class RecipeViewModelTest {
     }
 
     @Test
-    fun text_onQueryTextChanged_withEmptyString_YieldsEmptyListAdapter() {
+    fun onQueryTextChanged_withEmptyString_YieldsEmptyListAdapter() {
 
         sut.onQueryTextListener.onQueryTextChange("")
 
@@ -65,7 +62,7 @@ class RecipeViewModelTest {
     }
 
     @Test
-    fun text_onQueryTextChanged_withNonEmptyString_YieldsNonEmptyListAdapter() {
+    fun onQueryTextChanged_withNonEmptyString_YieldsNonEmptyListAdapter() {
 
         sut.onQueryTextListener.onQueryTextChange("a")
 
@@ -74,9 +71,9 @@ class RecipeViewModelTest {
     }
 
     @Test
-    fun text_onQueryTextChanged_withValidString_setsErrorMessageValueToNull() {
+    fun onQueryTextChanged_withValidString_setsErrorMessageValueToNull() {
 
-        sut.onQueryTextListener.onQueryTextChange("a")
+        sut.onQueryTextListener.onQueryTextChange("¡")
 
         assertThat(sut.errorMessage.value, nullValue())
     }
