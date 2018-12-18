@@ -18,7 +18,7 @@ class UseCaseSearchUnitTest {
 
     @Rule
     @JvmField
-    val rule = MockitoJUnit.rule()!!
+    val mockitoRule = MockitoJUnit.rule()!!
 
     @Rule
     @JvmField
@@ -28,7 +28,7 @@ class UseCaseSearchUnitTest {
     @Mock
     lateinit var recipeRepository: RecipeRepository
 
-    internal lateinit var sut: RecipeSearchUseCase
+    private lateinit var sut: RecipeSearchUseCase
 
     // Tests
     @Before

@@ -11,6 +11,7 @@ import com.mundaco.recipepuppy.databinding.ItemRecipeBinding
 import com.mundaco.recipepuppy.utils.extension.getParentActivity
 
 class RecipeListAdapter: RecyclerView.Adapter<RecipeListAdapter.ViewHolder>() {
+
     private lateinit var recipeList: List<Recipe>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeListAdapter.ViewHolder {
@@ -32,6 +33,7 @@ class RecipeListAdapter: RecyclerView.Adapter<RecipeListAdapter.ViewHolder>() {
     }
 
     class ViewHolder(private val binding: ItemRecipeBinding):RecyclerView.ViewHolder(binding.root){
+
         private val viewModel = RecipeViewModel()
 
         fun bind(recipe: Recipe){

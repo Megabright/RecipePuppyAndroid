@@ -23,8 +23,7 @@ class RecipeListViewModel(recipeRepository: RecipeRepository) : BaseViewModel() 
     val errorMessage: MutableLiveData<Int> = MutableLiveData()
     val errorClickListener = View.OnClickListener { searchRecipes("") }
 
-    // TODO: The ViewModel shouldn't depend on the List Adapter like this
-    val recipeListAdapter: RecipeListAdapter = RecipeListAdapter()
+    val recipeList: MutableLiveData<List<Recipe>> = MutableLiveData()
 
     val onQueryTextListener = object: SearchView.OnQueryTextListener {
 
@@ -48,7 +47,7 @@ class RecipeListViewModel(recipeRepository: RecipeRepository) : BaseViewModel() 
             .doOnTerminate { onRetrieveRecipeListFinish() }
             .subscribe(
                 { result -> onRetrieveRecipeListSuccess(result) },
-                { onRetrieveRecipeListError() }
+                { error -> onRetrieveRecipeListError(error) }
             )
     }
 
@@ -62,10 +61,11 @@ class RecipeListViewModel(recipeRepository: RecipeRepository) : BaseViewModel() 
     }
 
     private fun onRetrieveRecipeListSuccess(recipeList: List<Recipe>) {
-        recipeListAdapter.updateRecipeList(recipeList)
+        this.recipeList.value = recipeList
     }
 
-    private fun onRetrieveRecipeListError() {
+    private fun onRetrieveRecipeListError(error: Throwable) {
+        error.printStackTrace()
         errorMessage.value = R.string.recipe_error
     }
 

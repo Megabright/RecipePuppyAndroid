@@ -7,8 +7,8 @@ import com.mundaco.recipepuppy.rules.RxImmediateSchedulerRule
 import com.mundaco.recipepuppy.ui.recipe.RecipeListViewModel
 import io.reactivex.Observable
 import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.CoreMatchers.nullValue
 import org.hamcrest.MatcherAssert.assertThat
-import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -22,7 +22,7 @@ class RecipeViewModelTest {
 
     @Rule
     @JvmField
-    val rule = MockitoJUnit.rule()!!
+    val mockitoRule = MockitoJUnit.rule()!!
 
     @Rule
     @JvmField
@@ -30,13 +30,13 @@ class RecipeViewModelTest {
 
     @Rule
     @JvmField
-    var rule1: TestRule = InstantTaskExecutorRule()
+    var instantExecutorRule: TestRule = InstantTaskExecutorRule()
 
     // Helpers
     @Mock
     lateinit var recipeRepository: RecipeRepository
 
-    internal lateinit var sut: RecipeListViewModel
+    private lateinit var sut: RecipeListViewModel
 
     // Tests
     @Before
@@ -60,7 +60,7 @@ class RecipeViewModelTest {
         sut.onQueryTextListener.onQueryTextChange("")
 
 
-        assertThat(sut.recipeListAdapter.itemCount, `is`(0))
+        assertThat(sut.recipeList.value!!.size, `is`(0))
 
     }
 
@@ -69,7 +69,7 @@ class RecipeViewModelTest {
 
         sut.onQueryTextListener.onQueryTextChange("a")
 
-        assertThat(sut.recipeListAdapter.itemCount, `is`(1))
+        assertThat(sut.recipeList.value!!.size, `is`(1))
 
     }
 
@@ -78,7 +78,6 @@ class RecipeViewModelTest {
 
         sut.onQueryTextListener.onQueryTextChange("a")
 
-        assertNull(sut.errorMessage.value)
-
+        assertThat(sut.errorMessage.value, nullValue())
     }
 }

@@ -5,6 +5,9 @@
         <variable
                 name="viewModel"
                 type="com.mundaco.recipepuppy.ui.recipe.RecipeListViewModel" />
+        <variable
+                name="recipeListAdapter"
+                type="com.mundaco.recipepuppy.ui.recipe.RecipeListAdapter" />
     </data>
     <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -33,11 +36,13 @@
                 android:id="@+id/recipe_list"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                app:adapter="@{viewModel.getRecipeListAdapter()}"
+                android:adapter="@{recipeListAdapter}"
+                app:mutableRecipeList="@{viewModel.getRecipeList()}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="50dp"/>
+
     </android.support.constraint.ConstraintLayout>
 </layout>

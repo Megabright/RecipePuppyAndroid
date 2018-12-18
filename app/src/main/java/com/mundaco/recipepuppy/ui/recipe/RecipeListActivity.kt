@@ -31,6 +31,10 @@ class RecipeListActivity : AppCompatActivity() {
         })
         binding.viewModel = viewModel
 
+        binding.recipeListAdapter = RecipeListAdapter()
+
+
+
     }
 
     private fun showError(@StringRes errorMessage:Int){

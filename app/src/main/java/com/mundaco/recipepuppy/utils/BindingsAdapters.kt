@@ -8,6 +8,8 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
 import android.view.View
 import android.widget.TextView
+import com.mundaco.recipepuppy.data.model.Recipe
+import com.mundaco.recipepuppy.ui.recipe.RecipeListAdapter
 import com.mundaco.recipepuppy.utils.extension.getParentActivity
 
 
@@ -27,9 +29,14 @@ fun setMutableText(view: TextView, text: MutableLiveData<String>?) {
     }
 }
 
-@BindingAdapter("adapter")
-fun setAdapter(view: RecyclerView, adapter: RecyclerView.Adapter<*>) {
-    view.adapter = adapter
+@BindingAdapter("mutableRecipeList")
+fun setMutableRecipeList(view: RecyclerView, recipeList: MutableLiveData<List<Recipe>>?) {
+    val parentActivity:AppCompatActivity? = view.getParentActivity()
+    if(parentActivity != null && recipeList != null) {
+        recipeList.observe(parentActivity, Observer { value ->
+            (view.adapter as RecipeListAdapter).updateRecipeList(value!!)
+        })
+    }
 }
 
 @BindingAdapter("onQueryTextListener")
