@@ -1,7 +1,6 @@
 package com.mundaco.recipepuppy.ui.recipe
 
 import android.arch.lifecycle.MutableLiveData
-import android.support.v7.widget.SearchView
 import android.view.View
 import com.mundaco.recipepuppy.R
 import com.mundaco.recipepuppy.base.BaseViewModel
@@ -25,20 +24,8 @@ class RecipeListViewModel(recipeRepository: RecipeRepository) : BaseViewModel() 
 
     val recipeList: MutableLiveData<List<Recipe>> = MutableLiveData()
 
-    val onQueryTextListener = object: SearchView.OnQueryTextListener {
 
-        override fun onQueryTextSubmit(query: String?): Boolean {
-            searchRecipes(query!!)
-            return false
-        }
-
-        override fun onQueryTextChange(query: String?): Boolean {
-            searchRecipes(query!!)
-            return false
-        }
-    }
-
-    private fun searchRecipes(query: String) {
+    fun searchRecipes(query: String) {
 
         subscription = recipeSearchUseCase.searchRecipes(query)
             .subscribeOn(Schedulers.io())

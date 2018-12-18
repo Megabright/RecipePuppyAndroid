@@ -8,6 +8,7 @@ import android.support.annotation.StringRes
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.SearchView
 import com.mundaco.recipepuppy.R
 import com.mundaco.recipepuppy.databinding.ActivityRecipeListBinding
 import com.mundaco.recipepuppy.injection.ViewModelFactory
@@ -33,8 +34,7 @@ class RecipeListActivity : AppCompatActivity() {
 
         binding.recipeListAdapter = RecipeListAdapter()
 
-
-
+        binding.onQueryTextListener = OnQueryTextListener(viewModel)
     }
 
     private fun showError(@StringRes errorMessage:Int){
@@ -45,5 +45,18 @@ class RecipeListActivity : AppCompatActivity() {
 
     private fun hideError(){
         errorSnackBar?.dismiss()
+    }
+
+    // SearchView Listener
+    class OnQueryTextListener(val viewModel: RecipeListViewModel) : SearchView.OnQueryTextListener {
+        override fun onQueryTextSubmit(query: String?): Boolean {
+            viewModel.searchRecipes(query!!)
+            return false
+        }
+
+        override fun onQueryTextChange(query: String?): Boolean {
+            viewModel.searchRecipes(query!!)
+            return false
+        }
     }
 }

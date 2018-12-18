@@ -5,7 +5,6 @@ import android.arch.lifecycle.Observer
 import android.databinding.BindingAdapter
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.SearchView
 import android.view.View
 import android.widget.TextView
 import com.mundaco.recipepuppy.data.model.Recipe
@@ -23,7 +22,7 @@ fun setMutableVisibility(view: View, visibility: MutableLiveData<Int>?) {
 
 @BindingAdapter("mutableText")
 fun setMutableText(view: TextView, text: MutableLiveData<String>?) {
-    val parentActivity:AppCompatActivity? = view.getParentActivity()
+    val parentActivity: AppCompatActivity? = view.getParentActivity()
     if(parentActivity != null && text != null) {
         text.observe(parentActivity, Observer { value -> view.text = value?:""})
     }
@@ -31,15 +30,10 @@ fun setMutableText(view: TextView, text: MutableLiveData<String>?) {
 
 @BindingAdapter("mutableRecipeList")
 fun setMutableRecipeList(view: RecyclerView, recipeList: MutableLiveData<List<Recipe>>?) {
-    val parentActivity:AppCompatActivity? = view.getParentActivity()
+    val parentActivity: AppCompatActivity? = view.getParentActivity()
     if(parentActivity != null && recipeList != null) {
         recipeList.observe(parentActivity, Observer { value ->
             (view.adapter as RecipeListAdapter).updateRecipeList(value!!)
         })
     }
-}
-
-@BindingAdapter("onQueryTextListener")
-fun setOnQueryTextListener(view: SearchView, listener: SearchView.OnQueryTextListener) {
-    view.setOnQueryTextListener(listener)
 }

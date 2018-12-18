@@ -52,9 +52,9 @@ class RecipeViewModelTest {
     }
 
     @Test
-    fun onQueryTextChanged_withEmptyString_YieldsEmptyListAdapter() {
+    fun searchRecipes_withEmptyString_YieldsEmptyListAdapter() {
 
-        sut.onQueryTextListener.onQueryTextChange("")
+        sut.searchRecipes("")
 
 
         assertThat(sut.recipeList.value!!.size, `is`(0))
@@ -62,18 +62,18 @@ class RecipeViewModelTest {
     }
 
     @Test
-    fun onQueryTextChanged_withNonEmptyString_YieldsNonEmptyListAdapter() {
+    fun searchRecipes_withNonEmptyString_YieldsNonEmptyListAdapter() {
 
-        sut.onQueryTextListener.onQueryTextChange("a")
+        sut.searchRecipes("a")
 
         assertThat(sut.recipeList.value!!.size, `is`(1))
 
     }
 
     @Test
-    fun onQueryTextChanged_withValidString_setsErrorMessageValueToNull() {
+    fun searchRecipes_withValidString_setsErrorMessageValueToNull() {
 
-        sut.onQueryTextListener.onQueryTextChange("¡")
+        sut.searchRecipes("¡")
 
         assertThat(sut.errorMessage.value, nullValue())
     }
