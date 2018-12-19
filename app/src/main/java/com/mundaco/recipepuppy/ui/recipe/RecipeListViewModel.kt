@@ -19,28 +19,32 @@ class RecipeListViewModel(recipeRepository: RecipeRepository) : BaseViewModel() 
 
     private val recipeSearchUseCase = RecipeSearchInteractor(recipeRepository)
 
+    var recipeRequest = RecipeRequest("")
     val recipeList: MutableLiveData<List<Recipe>> = MutableLiveData()
 
     val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
 
     val errorMessage: MutableLiveData<Int> = MutableLiveData()
-    val errorClickListener = View.OnClickListener { searchRecipes(RecipeRequest("")) }
+    val errorClickListener = View.OnClickListener { searchRecipes("") }
 
     val onQueryTextListener: SearchView.OnQueryTextListener = object: SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
-            searchRecipes(RecipeRequest(query!!))
+            searchRecipes(query!!)
             return false
         }
 
         override fun onQueryTextChange(query: String?): Boolean {
-            searchRecipes(RecipeRequest(query!!))
+            searchRecipes(query!!)
             return false
         }
     }
 
-    private fun searchRecipes(request: RecipeRequest) {
+    private fun searchRecipes(query: String, page: Int? = null) {
 
-        subscription = recipeSearchUseCase.searchRecipes(request)
+        recipeRequest.query = query
+        if(page != null) recipeRequest.page = page
+
+        subscription = recipeSearchUseCase.searchRecipes(recipeRequest)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { onRetrieveRecipeListStart() }
