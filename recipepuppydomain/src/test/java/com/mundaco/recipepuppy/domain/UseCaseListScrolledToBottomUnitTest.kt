@@ -5,8 +5,7 @@ import com.mundaco.recipepuppy.data.model.Recipe
 import com.mundaco.recipepuppy.data.model.RecipeRequest
 import com.mundaco.recipepuppy.domain.rules.RxImmediateSchedulerRule
 import io.reactivex.Observable
-import io.reactivex.observers.TestObserver
-import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.CoreMatchers.instanceOf
 import org.junit.Assert.assertThat
 import org.junit.Before
 import org.junit.Rule
@@ -15,7 +14,7 @@ import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnit
 
-class UseCaseSearchUnitTest {
+class UseCaseListScrolledToBottomUnitTest {
 
     @Rule
     @JvmField
@@ -29,7 +28,7 @@ class UseCaseSearchUnitTest {
     @Mock
     lateinit var recipeRepository: RecipeRepository
 
-    private lateinit var sut: RecipeSearchUseCase
+    private lateinit var sut: ListScrolledToBottomUseCase
 
     // Tests
     @Before
@@ -44,37 +43,15 @@ class UseCaseSearchUnitTest {
             Observable.just(recipeRequest)
         }
 
-        sut = RecipeSearchInteractor(recipeRepository)
+        sut = ListScrolledToBottomInteractor(recipeRepository)
     }
 
     @Test
-    fun search_whenEmptyQuery_ReturnsEmptyList() {
+    fun requestRecipePage_returnsObservable() {
 
-        val result = sut.searchRecipes(RecipeRequest(""))
+        val result = sut.requestRecipePage(RecipeRequest("test", 1))
 
-        val testObserver = TestObserver<RecipeRequest>()
-        result.subscribe(testObserver)
+        assertThat(result,instanceOf(Observable::class.java))
 
-        testObserver.assertComplete()
-        testObserver.assertNoErrors()
-        testObserver.assertValueCount(1)
-        assertThat(testObserver.values()[0].results, `is`(emptyList()))
-    }
-
-    @Test
-    fun search_whenNonEmptyQuery_ReturnsNonEmptyList() {
-
-        val result = sut.searchRecipes(RecipeRequest("test"))
-
-        val testObserver = TestObserver<RecipeRequest>()
-        result.subscribe(testObserver)
-
-        testObserver.assertComplete()
-        testObserver.assertNoErrors()
-        testObserver.assertValueCount(1)
-
-        val recipeRequest = testObserver.values()[0]
-        assertThat(recipeRequest.results!!.size, `is`(1))
-        assertThat(recipeRequest.results!![0].title, `is`("test"))
     }
 }
