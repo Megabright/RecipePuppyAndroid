@@ -44,7 +44,7 @@ class RecipeRepositoryImpl private constructor(): RecipeRepository {
         }.concatMap { dbRequest ->
                 if(dbRequest.results == null) {
                     recipeApi.getRecipeResponse(request.query).concatMap { apiResponse ->
-                        recipeDao.insertAll(RecipeRequest(request.query, apiResponse.results))
+                        recipeDao.insertAll(RecipeRequest(request.query, request.page, apiResponse.results))
                         Log.d("REPOSITORY","Data gotten from the API")
                         Observable.just(apiResponse.results)
                     }

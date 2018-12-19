@@ -1,11 +1,10 @@
 package com.mundaco.recipepuppy.data.model
 
 import android.arch.persistence.room.Entity
-import android.arch.persistence.room.PrimaryKey
 
-@Entity
+@Entity(primaryKeys = ["query","page"])
 data class RecipeRequest(
-    @field:PrimaryKey
     val query: String,
+    val page: Int = 1,
     val results: List<Recipe>? = null
 )
