@@ -28,7 +28,7 @@ class RecipeListViewModel(recipeRepository: RecipeRepository) : BaseViewModel() 
     val errorMessage: MutableLiveData<Int> = MutableLiveData()
     val errorClickListener = View.OnClickListener { searchRecipes("") }
 
-    val onQueryTextListener: SearchView.OnQueryTextListener = object: SearchView.OnQueryTextListener {
+    val onQueryTextListener = object: SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
             searchRecipes(query!!)
             return false

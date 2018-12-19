@@ -107,4 +107,12 @@ class RecipeViewModelTest {
         assertThat(sut.loadingVisibility.value, `is`(View.GONE))
     }
 
+    @Test
+    fun onListScrollChanged_() {
+
+        //sut.onQueryTextListener.onQueryTextChange("test")
+
+        //assertThat(sut.loadingVisibility.value, `is`(View.GONE))
+    }
+
 }

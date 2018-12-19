@@ -7,6 +7,9 @@ import io.reactivex.Observable
 class ListScrolledToBottomInteractor(private val recipeRepository: RecipeRepository) : ListScrolledToBottomUseCase {
 
     override fun requestRecipePage(request: RecipeRequest): Observable<RecipeRequest> {
-        return recipeRepository.searchRecipes(request)
+        return if(request.page < 1) {
+            request.results = emptyList()
+            Observable.just(request)
+        } else recipeRepository.searchRecipes(request)
     }
 }

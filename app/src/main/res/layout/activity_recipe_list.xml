@@ -33,12 +33,13 @@
                 android:id="@+id/recipe_list"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                app:mutableRecipeList="@{viewModel.getRecipeList()}"
+                android:layout_marginTop="50dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="50dp"/>
+                app:mutableRecipeList="@{viewModel.getRecipeList()}"
+        />
 
     </android.support.constraint.ConstraintLayout>
 </layout>

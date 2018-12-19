@@ -5,6 +5,8 @@ import com.mundaco.recipepuppy.data.model.Recipe
 import com.mundaco.recipepuppy.data.model.RecipeRequest
 import com.mundaco.recipepuppy.domain.rules.RxImmediateSchedulerRule
 import io.reactivex.Observable
+import io.reactivex.observers.TestObserver
+import org.hamcrest.CoreMatchers
 import org.hamcrest.CoreMatchers.instanceOf
 import org.junit.Assert.assertThat
 import org.junit.Before
@@ -52,6 +54,21 @@ class UseCaseListScrolledToBottomUnitTest {
         val result = sut.requestRecipePage(RecipeRequest("test", 1))
 
         assertThat(result,instanceOf(Observable::class.java))
+
+    }
+
+    @Test
+    fun requestRecipePage_withPageLowerThanOne_returnsObservableRequestWithEmptyList() {
+
+        val result = sut.requestRecipePage(RecipeRequest("test", 0))
+
+        val testObserver = TestObserver<RecipeRequest>()
+        result.subscribe(testObserver)
+
+        testObserver.assertComplete()
+        testObserver.assertNoErrors()
+        testObserver.assertValueCount(1)
+        assertThat(testObserver.values()[0].results, CoreMatchers.`is`(emptyList()))
 
     }
 }

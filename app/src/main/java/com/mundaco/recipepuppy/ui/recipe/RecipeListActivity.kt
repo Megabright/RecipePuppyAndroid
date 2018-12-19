@@ -8,6 +8,8 @@ import android.support.annotation.StringRes
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.util.Log
 import com.mundaco.recipepuppy.R
 import com.mundaco.recipepuppy.databinding.ActivityRecipeListBinding
 import com.mundaco.recipepuppy.injection.ViewModelFactory
@@ -31,6 +33,18 @@ class RecipeListActivity : AppCompatActivity() {
                 errorMessage -> if(errorMessage != null) showError(errorMessage) else hideError()
         })
         binding.viewModel = viewModel
+
+
+        binding.recipeList.addOnScrollListener(
+            object: EndlessRecyclerViewScrollListener(binding.recipeList.layoutManager!!) {
+
+                override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView) {
+                    // TODO: Notify the ViewModel
+                    Log.d("ScrollListener","onLoadMore(page: $page, totalItemsCount: $totalItemsCount)")
+                }
+
+        })
+
     }
 
     private fun showError(@StringRes errorMessage:Int){
