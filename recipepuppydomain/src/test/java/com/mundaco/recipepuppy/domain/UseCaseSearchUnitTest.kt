@@ -2,6 +2,7 @@ package com.mundaco.recipepuppy.domain
 
 import com.mundaco.recipepuppy.data.RecipeRepository
 import com.mundaco.recipepuppy.data.model.Recipe
+import com.mundaco.recipepuppy.data.model.RecipeRequest
 import com.mundaco.recipepuppy.domain.rules.RxImmediateSchedulerRule
 import io.reactivex.Observable
 import io.reactivex.observers.TestObserver
@@ -35,13 +36,13 @@ class UseCaseSearchUnitTest {
     fun setUp() {
 
         val recipeList = arrayListOf<Recipe>()
-        recipeList.add(Recipe("a","","",""))
-        Mockito.`when`(recipeRepository.searchRecipes("")).thenReturn(
-            Observable.just(emptyList())
-        )
-        Mockito.`when`(recipeRepository.searchRecipes("a")).thenReturn(
-            Observable.just(recipeList)
-        )
+        recipeList.add(Recipe("test","test","test","test"))
+        Mockito.`when`(recipeRepository.searchRecipes(RecipeRequest("test"))).thenAnswer { invocation ->
+            Observable.just(recipeList.filter { recipe ->
+                val query = invocation.getArgument<RecipeRequest>(0).query
+                recipe.title.contains(query)
+            })
+        }
 
         sut = RecipeSearchInteractor(recipeRepository)
     }
@@ -49,7 +50,7 @@ class UseCaseSearchUnitTest {
     @Test
     fun search_whenEmptyQuery_ReturnsEmptyList() {
 
-        val result = sut.searchRecipes("")
+        val result = sut.searchRecipes(RecipeRequest(""))
 
         val testObserver = TestObserver<List<Recipe>>()
         result.subscribe(testObserver)
@@ -63,7 +64,7 @@ class UseCaseSearchUnitTest {
     @Test
     fun search_whenNonEmptyQuery_ReturnsNonEmptyList() {
 
-        val result = sut.searchRecipes("a")
+        val result = sut.searchRecipes(RecipeRequest("test"))
 
         val testObserver = TestObserver<List<Recipe>>()
         result.subscribe(testObserver)
@@ -74,6 +75,6 @@ class UseCaseSearchUnitTest {
 
         val listResult = testObserver.values()[0]
         assertThat(listResult.size, `is`(1))
-        assertThat(listResult[0].title, `is`("a"))
+        assertThat(listResult[0].title, `is`("test"))
     }
 }

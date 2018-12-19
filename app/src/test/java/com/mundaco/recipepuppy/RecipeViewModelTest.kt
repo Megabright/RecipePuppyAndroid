@@ -4,6 +4,7 @@ import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.view.View
 import com.mundaco.recipepuppy.data.RecipeRepository
 import com.mundaco.recipepuppy.data.model.Recipe
+import com.mundaco.recipepuppy.data.model.RecipeRequest
 import com.mundaco.recipepuppy.rules.RxImmediateSchedulerRule
 import com.mundaco.recipepuppy.ui.recipe.RecipeListViewModel
 import io.reactivex.Observable
@@ -15,7 +16,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
 import org.mockito.Mock
-import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnit
 
@@ -47,10 +47,10 @@ class RecipeViewModelTest {
 
         val recipeList = arrayListOf<Recipe>()
         recipeList.add(Recipe("This is a test title","test","test","test"))
-
-        `when`(recipeRepository.searchRecipes(Mockito.anyString())).thenAnswer { invocation ->
+        `when`(recipeRepository.searchRecipes(RecipeRequest("test"))).thenAnswer { invocation ->
             Observable.just(recipeList.filter { recipe ->
-                recipe.title.contains(invocation.getArgument<String>(0))
+                val query = invocation.getArgument<RecipeRequest>(0).query
+                recipe.title.contains(query)
             })
         }
 
