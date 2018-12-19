@@ -3,7 +3,7 @@ package com.mundaco.recipepuppy.data
 import android.util.Log
 import com.mundaco.recipepuppy.data.database.RecipeDao
 import com.mundaco.recipepuppy.data.model.Recipe
-import com.mundaco.recipepuppy.data.model.RecipeQuery
+import com.mundaco.recipepuppy.data.model.RecipeRequest
 import com.mundaco.recipepuppy.data.network.RecipeApi
 import com.mundaco.recipepuppy.data.utils.BASE_URL
 import io.reactivex.Observable
@@ -37,22 +37,21 @@ class RecipeRepositoryImpl private constructor(): RecipeRepository {
     lateinit var recipeDao: RecipeDao
 
 
-    override fun searchRecipes(query: String): Observable<List<Recipe>> {
+    override fun searchRecipes(request: RecipeRequest): Observable<List<Recipe>> {
 
         return Observable.fromCallable {
-            recipeDao.search(query) ?: RecipeQuery(query, null)
-        }.concatMap { dbRecipeQuery ->
-                if(dbRecipeQuery.results == null) {
-                    recipeApi.getRecipeResponse(query).concatMap { apiRecipeResponse ->
-                        val apiRecipeQuery = RecipeQuery(query, apiRecipeResponse.results)
-                        recipeDao.insertAll(apiRecipeQuery)
+            recipeDao.search(request.query) ?: request
+        }.concatMap { dbRequest ->
+                if(dbRequest.results == null) {
+                    recipeApi.getRecipeResponse(request.query).concatMap { apiResponse ->
+                        recipeDao.insertAll(RecipeRequest(request.query, apiResponse.results))
                         Log.d("REPOSITORY","Data gotten from the API")
-                        Observable.just(apiRecipeResponse.results)
+                        Observable.just(apiResponse.results)
                     }
                 }
                 else {
                     Log.d("REPOSITORY","Data gotten from the local database.")
-                    Observable.just(dbRecipeQuery.results)
+                    Observable.just(dbRequest.results)
                 }
 
             }
