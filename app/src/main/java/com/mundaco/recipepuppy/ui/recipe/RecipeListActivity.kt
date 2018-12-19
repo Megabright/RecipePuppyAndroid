@@ -34,16 +34,16 @@ class RecipeListActivity : AppCompatActivity() {
         })
         binding.viewModel = viewModel
 
+        // TODO: Turn this into a binding property
+        val scrollListener = object: EndlessRecyclerViewScrollListener(binding.recipeList.layoutManager!!) {
 
-        binding.recipeList.addOnScrollListener(
-            object: EndlessRecyclerViewScrollListener(binding.recipeList.layoutManager!!) {
+            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView) {
+                // TODO: Notify the ViewModel
+                Log.d("ScrollListener","onLoadMore(page: $page, totalItemsCount: $totalItemsCount)")
+            }
 
-                override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView) {
-                    // TODO: Notify the ViewModel
-                    Log.d("ScrollListener","onLoadMore(page: $page, totalItemsCount: $totalItemsCount)")
-                }
-
-        })
+        }
+        binding.recipeList.addOnScrollListener(scrollListener)
 
     }
 
