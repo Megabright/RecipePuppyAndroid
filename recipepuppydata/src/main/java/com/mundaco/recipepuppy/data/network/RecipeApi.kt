@@ -10,7 +10,8 @@ interface RecipeApi {
 
     @GET("?")
     fun getRecipeResponse(
-        @Query("q") query: String
+        @Query("q") query: String,
+        @Query("p") page: Int
     ): Observable<RecipeResponse>
 
 }

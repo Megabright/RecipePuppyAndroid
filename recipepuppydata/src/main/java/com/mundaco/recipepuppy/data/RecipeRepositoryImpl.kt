@@ -39,10 +39,10 @@ class RecipeRepositoryImpl private constructor(): RecipeRepository {
     override fun searchRecipes(request: RecipeRequest): Observable<RecipeRequest> {
 
         return Observable.fromCallable {
-            recipeDao.search(request.query) ?: request
+            recipeDao.search(request.query, request.page) ?: request
         }.concatMap { dbRequest ->
                 if(dbRequest.results == null) {
-                    recipeApi.getRecipeResponse(request.query).concatMap { apiResponse ->
+                    recipeApi.getRecipeResponse(request.query, request.page).concatMap { apiResponse ->
                         recipeDao.insertAll(RecipeRequest(request.query, request.page, apiResponse.results))
                         Log.d("REPOSITORY","Data gotten from the API")
                         dbRequest.results = apiResponse.results

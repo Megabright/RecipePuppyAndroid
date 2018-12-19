@@ -8,8 +8,8 @@ import com.mundaco.recipepuppy.data.model.RecipeRequest
 
 @Dao
 interface RecipeDao {
-    @Query("SELECT * FROM RecipeRequest WHERE `query` = :query")
-    fun search(query: String): RecipeRequest?
+    @Query("SELECT * FROM RecipeRequest WHERE `query` = :query AND page = :page")
+    fun search(query: String, page: Int): RecipeRequest?
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
