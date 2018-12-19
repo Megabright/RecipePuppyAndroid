@@ -16,7 +16,7 @@ class DaoModule(val context: Context) {
     @Provides
     @Singleton
     internal fun provideRecipeDao(): RecipeDao {
-        return Room.databaseBuilder(context , AppDatabase::class.java, "recipes").build().recipeDao()
+        return Room.databaseBuilder(context , AppDatabase::class.java, "queries").build().recipeDao()
 
     }
 
