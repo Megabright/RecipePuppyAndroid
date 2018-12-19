@@ -19,7 +19,8 @@ class RecipeListViewModel(recipeRepository: RecipeRepository) : BaseViewModel() 
 
     private val recipeSearchUseCase = RecipeSearchInteractor(recipeRepository)
 
-    var recipeRequest = RecipeRequest("")
+    private var recipeRequest = RecipeRequest("")
+
     val recipeList: MutableLiveData<List<Recipe>> = MutableLiveData()
 
     val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
@@ -39,10 +40,9 @@ class RecipeListViewModel(recipeRepository: RecipeRepository) : BaseViewModel() 
         }
     }
 
-    private fun searchRecipes(query: String, page: Int? = null) {
+    private fun searchRecipes(query: String, page: Int = 1) {
 
-        recipeRequest.query = query
-        if(page != null) recipeRequest.page = page
+        recipeRequest.new(query, page)
 
         subscription = recipeSearchUseCase.searchRecipes(recipeRequest)
             .subscribeOn(Schedulers.io())
@@ -64,8 +64,8 @@ class RecipeListViewModel(recipeRepository: RecipeRepository) : BaseViewModel() 
         loadingVisibility.value = View.GONE
     }
 
-    private fun onRetrieveRecipeListSuccess(recipeList: List<Recipe>) {
-        this.recipeList.value = recipeList
+    private fun onRetrieveRecipeListSuccess(recipeRequest: RecipeRequest) {
+        this.recipeList.value = recipeRequest.results
     }
 
     private fun onRetrieveRecipeListError(error: Throwable) {

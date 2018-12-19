@@ -6,5 +6,11 @@ import android.arch.persistence.room.Entity
 data class RecipeRequest(
     var query: String,
     var page: Int = 1,
-    val results: List<Recipe>? = null
-)
+    var results: List<Recipe>? = null
+) {
+    fun new(query: String, page: Int = 1) {
+        this.query = query
+        this.page = page
+        this.results = null
+    }
+}

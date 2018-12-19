@@ -2,7 +2,6 @@ package com.mundaco.recipepuppy.data
 
 import android.util.Log
 import com.mundaco.recipepuppy.data.database.RecipeDao
-import com.mundaco.recipepuppy.data.model.Recipe
 import com.mundaco.recipepuppy.data.model.RecipeRequest
 import com.mundaco.recipepuppy.data.network.RecipeApi
 import com.mundaco.recipepuppy.data.utils.BASE_URL
@@ -37,7 +36,7 @@ class RecipeRepositoryImpl private constructor(): RecipeRepository {
     lateinit var recipeDao: RecipeDao
 
 
-    override fun searchRecipes(request: RecipeRequest): Observable<List<Recipe>> {
+    override fun searchRecipes(request: RecipeRequest): Observable<RecipeRequest> {
 
         return Observable.fromCallable {
             recipeDao.search(request.query) ?: request
@@ -46,12 +45,13 @@ class RecipeRepositoryImpl private constructor(): RecipeRepository {
                     recipeApi.getRecipeResponse(request.query).concatMap { apiResponse ->
                         recipeDao.insertAll(RecipeRequest(request.query, request.page, apiResponse.results))
                         Log.d("REPOSITORY","Data gotten from the API")
-                        Observable.just(apiResponse.results)
+                        dbRequest.results = apiResponse.results
+                        Observable.just(dbRequest)
                     }
                 }
                 else {
                     Log.d("REPOSITORY","Data gotten from the local database.")
-                    Observable.just(dbRequest.results)
+                    Observable.just(dbRequest)
                 }
 
             }
