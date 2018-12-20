@@ -13,4 +13,9 @@ data class RecipeRequest(
         this.page = page
         this.results = null
     }
+
+    fun new(page: Int) {
+        this.page = page
+        this.results = null
+    }
 }

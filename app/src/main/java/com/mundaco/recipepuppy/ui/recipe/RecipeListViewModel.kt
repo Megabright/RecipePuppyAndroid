@@ -26,34 +26,49 @@ class RecipeListViewModel(recipeRepository: RecipeRepository) : BaseViewModel(),
     val recipeList: MutableLiveData<List<Recipe>> = MutableLiveData()
 
     val scrollPosition: MutableLiveData<Int> = MutableLiveData()
+    lateinit var scrollListener: EndlessRecyclerViewScrollListener
 
     val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
 
     val errorMessage: MutableLiveData<Int> = MutableLiveData()
-    val errorClickListener = View.OnClickListener { searchRecipes("") }
+    val errorClickListener = View.OnClickListener { searchRecipes() }
 
     val onQueryTextListener = object: SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
-            searchRecipes(query!!)
+            newSearchRequest(query!!)
             return false
         }
 
         override fun onQueryTextChange(query: String?): Boolean {
-            searchRecipes(query!!)
+            newSearchRequest(query!!)
             return false
         }
     }
 
-    lateinit var scrollListener: EndlessRecyclerViewScrollListener
 
-    private fun searchRecipes(query: String, page: Int = 1) {
+    private fun newSearchRequest(query: String) {
+
+        recipeList.value = mutableListOf()
 
         scrollPosition.value = 0
         scrollListener.resetState()
 
 
-        recipeRequest.new(query, page)
+        recipeRequest.new(query)
 
+        searchRecipes()
+    }
+
+    private fun newPageRequest(page: Int) {
+
+        recipeRequest.new(page)
+
+        searchRecipes()
+
+    }
+
+
+    private fun searchRecipes() {
 
         subscription = recipeSearchUseCase.searchRecipes(recipeRequest)
             .subscribeOn(Schedulers.io())
@@ -76,7 +91,7 @@ class RecipeListViewModel(recipeRepository: RecipeRepository) : BaseViewModel(),
     }
 
     private fun onRetrieveRecipeListSuccess(recipeRequest: RecipeRequest) {
-        this.recipeList.value = recipeRequest.results
+        recipeList.value = (recipeList.value!! + recipeRequest.results!!)
     }
 
     private fun onRetrieveRecipeListError(error: Throwable) {
@@ -91,6 +106,7 @@ class RecipeListViewModel(recipeRepository: RecipeRepository) : BaseViewModel(),
 
     override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView) {
         Log.d("ScrollListener","onLoadMore(page: $page, totalItemsCount: $totalItemsCount)")
+        newPageRequest(page + 1)
     }
 
 }
