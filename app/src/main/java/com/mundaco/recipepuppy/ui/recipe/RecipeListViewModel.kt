@@ -9,12 +9,18 @@ import com.mundaco.recipepuppy.base.BaseViewModel
 import com.mundaco.recipepuppy.data.RecipeRepository
 import com.mundaco.recipepuppy.data.model.Recipe
 import com.mundaco.recipepuppy.data.model.RecipeRequest
+import com.mundaco.recipepuppy.domain.ListScrolledToBottomUseCase
+import com.mundaco.recipepuppy.domain.RetryButtonClickedUseCase
+import com.mundaco.recipepuppy.domain.SearchTextChangedUseCase
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
 class RecipeListViewModel(private val recipeRepository: RecipeRepository):
     BaseViewModel(),
+    SearchTextChangedUseCase,
+    ListScrolledToBottomUseCase,
+    RetryButtonClickedUseCase,
     EndlessRecyclerViewScrollListenerDelegate
 {
     private lateinit var subscription: Disposable
@@ -31,22 +37,21 @@ class RecipeListViewModel(private val recipeRepository: RecipeRepository):
     val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
 
     val errorMessage: MutableLiveData<Int> = MutableLiveData()
-    val errorClickListener = View.OnClickListener { searchRecipes() }
+    val errorClickListener = View.OnClickListener { sendCurrentRequest() }
 
     val onQueryTextListener = object: SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
-            newSearchRequest(query!!)
+            sendNewRequest(query!!)
             return false
         }
 
         override fun onQueryTextChange(query: String?): Boolean {
-            newSearchRequest(query!!)
+            sendNewRequest(query!!)
             return false
         }
     }
 
-
-    private fun newSearchRequest(query: String) {
+    override fun sendNewRequest(query: String) {
 
         recipeList.value = emptyList()
 
@@ -55,19 +60,19 @@ class RecipeListViewModel(private val recipeRepository: RecipeRepository):
 
         recipeRequest.query = query
 
-        searchRecipes()
+        sendCurrentRequest()
     }
 
-    private fun newPageRequest(page: Int) {
+    override fun requestNextPage(page: Int) {
 
-        recipeRequest.page = page
+        recipeRequest.page = page + 1
 
-        searchRecipes()
+        sendCurrentRequest()
 
     }
 
 
-    private fun searchRecipes() {
+    override fun sendCurrentRequest() {
 
         subscription = recipeRepository.searchRecipes(recipeRequest)
             .subscribeOn(Schedulers.io())
@@ -104,7 +109,7 @@ class RecipeListViewModel(private val recipeRepository: RecipeRepository):
     }
 
     override fun onEndOfPageReached(page: Int, totalItemsCount: Int, view: RecyclerView) {
-        newPageRequest(page + 1)
+        requestNextPage(page)
     }
 
 }
