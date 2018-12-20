@@ -1,7 +1,9 @@
 package com.mundaco.recipepuppy.ui.recipe
 
 import android.arch.lifecycle.MutableLiveData
+import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
+import android.util.Log
 import android.view.View
 import com.mundaco.recipepuppy.R
 import com.mundaco.recipepuppy.base.BaseViewModel
@@ -13,7 +15,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
-class RecipeListViewModel(recipeRepository: RecipeRepository) : BaseViewModel() {
+class RecipeListViewModel(recipeRepository: RecipeRepository) : BaseViewModel(), EndlessRecyclerViewScrollListenerDelegate {
 
     private lateinit var subscription: Disposable
 
@@ -22,6 +24,8 @@ class RecipeListViewModel(recipeRepository: RecipeRepository) : BaseViewModel() 
     private var recipeRequest = RecipeRequest("")
 
     val recipeList: MutableLiveData<List<Recipe>> = MutableLiveData()
+
+    val scrollPosition: MutableLiveData<Int> = MutableLiveData()
 
     val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
 
@@ -40,9 +44,16 @@ class RecipeListViewModel(recipeRepository: RecipeRepository) : BaseViewModel() 
         }
     }
 
+    lateinit var scrollListener: EndlessRecyclerViewScrollListener
+
     private fun searchRecipes(query: String, page: Int = 1) {
 
+        scrollPosition.value = 0
+        scrollListener.resetState()
+
+
         recipeRequest.new(query, page)
+
 
         subscription = recipeSearchUseCase.searchRecipes(recipeRequest)
             .subscribeOn(Schedulers.io())
@@ -77,4 +88,9 @@ class RecipeListViewModel(recipeRepository: RecipeRepository) : BaseViewModel() 
         super.onCleared()
         subscription.dispose()
     }
+
+    override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView) {
+        Log.d("ScrollListener","onLoadMore(page: $page, totalItemsCount: $totalItemsCount)")
+    }
+
 }

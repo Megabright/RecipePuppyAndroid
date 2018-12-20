@@ -39,6 +39,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:mutableRecipeList="@{viewModel.getRecipeList()}"
+                app:mutableScrollPosition="@{viewModel.getScrollPosition()}"
+                app:onScrollListener="@{viewModel.scrollListener}"
         />
 
     </android.support.constraint.ConstraintLayout>

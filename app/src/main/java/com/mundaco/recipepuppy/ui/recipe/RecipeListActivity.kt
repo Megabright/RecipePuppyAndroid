@@ -8,8 +8,6 @@ import android.support.annotation.StringRes
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.util.Log
 import com.mundaco.recipepuppy.R
 import com.mundaco.recipepuppy.databinding.ActivityRecipeListBinding
 import com.mundaco.recipepuppy.injection.ViewModelFactory
@@ -34,16 +32,10 @@ class RecipeListActivity : AppCompatActivity() {
         })
         binding.viewModel = viewModel
 
-        // TODO: Turn this into a binding property
-        val scrollListener = object: EndlessRecyclerViewScrollListener(binding.recipeList.layoutManager!!) {
 
-            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView) {
-                // TODO: Notify the ViewModel
-                Log.d("ScrollListener","onLoadMore(page: $page, totalItemsCount: $totalItemsCount)")
-            }
 
-        }
-        binding.recipeList.addOnScrollListener(scrollListener)
+        viewModel.scrollListener = EndlessRecyclerViewScrollListener(binding.recipeList.layoutManager!!,viewModel)
+
 
     }
 

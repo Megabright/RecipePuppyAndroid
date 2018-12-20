@@ -37,3 +37,13 @@ fun setMutableRecipeList(view: RecyclerView, recipeList: MutableLiveData<List<Re
         })
     }
 }
+
+@BindingAdapter("mutableScrollPosition")
+fun setMutableScrollPosition(view: RecyclerView, scrollPosition: MutableLiveData<Int>?) {
+    val parentActivity: AppCompatActivity? = view.getParentActivity()
+    if(parentActivity != null && scrollPosition != null) {
+        scrollPosition.observe(parentActivity, Observer { value ->
+            view.scrollToPosition(value!!)
+        })
+    }
+}
