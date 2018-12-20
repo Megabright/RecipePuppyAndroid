@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
+import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.annotation.StringRes
@@ -12,6 +13,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.inputmethod.InputMethodManager
 import com.mundaco.recipepuppy.R
+import com.mundaco.recipepuppy.data.model.Recipe
 import com.mundaco.recipepuppy.databinding.ActivityRecipeListBinding
 import com.mundaco.recipepuppy.injection.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_recipe_list.*
@@ -37,6 +39,12 @@ class RecipeListActivity : AppCompatActivity() {
         viewModel.errorMessage.observe(this, Observer {
                 errorMessage -> if(errorMessage != null) showError(errorMessage) else hideError()
         })
+        viewModel.selectedRecipe.observe(this, Observer {
+            val intent = Intent(applicationContext , RecipeDetailActivity::class.java )
+            intent.putExtra("recipe", it)
+            startActivity(intent)
+        })
+
         binding.viewModel = viewModel
 
         viewModel.scrollListener = EndlessRecyclerViewScrollListener(binding.recipeList.layoutManager!!,viewModel)
@@ -63,5 +71,9 @@ class RecipeListActivity : AppCompatActivity() {
             .hideSoftInputFromWindow(root_layout.windowToken, 0)
 
         root_layout.requestFocus()
+    }
+
+    fun onRecipeItemClicked(recipe: Recipe) {
+        viewModel.showRecipe(recipe)
     }
 }

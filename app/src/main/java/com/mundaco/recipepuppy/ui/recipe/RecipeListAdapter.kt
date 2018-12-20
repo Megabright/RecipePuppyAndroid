@@ -1,6 +1,5 @@
 package com.mundaco.recipepuppy.ui.recipe
 
-import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -37,14 +36,12 @@ class RecipeListAdapter: RecyclerView.Adapter<RecipeListAdapter.ViewHolder>() {
         private val viewModel = RecipeViewModel()
 
         fun bind(recipe: Recipe){
+
             viewModel.bind(recipe)
 
-            //
             itemView.setOnClickListener {
-                val intent = Intent(it.context , RecipeDetailActivity::class.java )
-                intent.putExtra("recipe", recipe)
-                it.getParentActivity()?.startActivity(intent)
 
+                (it.getParentActivity() as RecipeListActivity).onRecipeItemClicked(recipe)
             }
 
             binding.viewModel = viewModel

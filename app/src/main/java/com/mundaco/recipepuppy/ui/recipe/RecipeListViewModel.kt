@@ -9,6 +9,7 @@ import com.mundaco.recipepuppy.base.BaseViewModel
 import com.mundaco.recipepuppy.data.RecipeRepository
 import com.mundaco.recipepuppy.data.model.Recipe
 import com.mundaco.recipepuppy.data.model.RecipeRequest
+import com.mundaco.recipepuppy.domain.ListItemClickedUseCase
 import com.mundaco.recipepuppy.domain.ListScrolledToBottomUseCase
 import com.mundaco.recipepuppy.domain.RetryButtonClickedUseCase
 import com.mundaco.recipepuppy.domain.SearchTextChangedUseCase
@@ -19,13 +20,12 @@ import io.reactivex.schedulers.Schedulers
 class RecipeListViewModel(private val recipeRepository: RecipeRepository):
     BaseViewModel(),
     SearchTextChangedUseCase,
+    ListItemClickedUseCase,
     ListScrolledToBottomUseCase,
     RetryButtonClickedUseCase,
     EndlessRecyclerViewScrollListenerDelegate
 {
     private lateinit var subscription: Disposable
-
-    //private val recipeSearchUseCase = RecipeSearchInteractor(recipeRepository)
 
     private var recipeRequest = RecipeRequest()
 
@@ -39,6 +39,8 @@ class RecipeListViewModel(private val recipeRepository: RecipeRepository):
     val errorMessage: MutableLiveData<Int> = MutableLiveData()
     val errorClickListener = View.OnClickListener { sendCurrentRequest() }
 
+    val selectedRecipe: MutableLiveData<Recipe> = MutableLiveData()
+
     val onQueryTextListener = object: SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
             sendNewRequest(query!!)
@@ -49,6 +51,10 @@ class RecipeListViewModel(private val recipeRepository: RecipeRepository):
             sendNewRequest(query!!)
             return false
         }
+    }
+
+    override fun showRecipe(recipe: Recipe) {
+        selectedRecipe.value = recipe
     }
 
     override fun sendNewRequest(query: String) {
