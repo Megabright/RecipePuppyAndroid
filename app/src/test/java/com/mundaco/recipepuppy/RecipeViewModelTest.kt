@@ -1,11 +1,14 @@
 package com.mundaco.recipepuppy
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
+import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.mundaco.recipepuppy.data.RecipeRepository
 import com.mundaco.recipepuppy.data.model.Recipe
 import com.mundaco.recipepuppy.data.model.RecipeRequest
 import com.mundaco.recipepuppy.rules.RxImmediateSchedulerRule
+import com.mundaco.recipepuppy.ui.recipe.EndlessRecyclerViewScrollListener
+import com.mundaco.recipepuppy.ui.recipe.EndlessRecyclerViewScrollListenerDelegate
 import com.mundaco.recipepuppy.ui.recipe.RecipeListViewModel
 import io.reactivex.Observable
 import org.hamcrest.CoreMatchers.`is`
@@ -38,7 +41,26 @@ class RecipeViewModelTest {
     @Mock
     lateinit var recipeRepository: RecipeRepository
 
+
+    class ScrollListenerDelegate: EndlessRecyclerViewScrollListenerDelegate {
+        override fun onEndOfPageReached(page: Int, totalItemsCount: Int, view: RecyclerView) {
+
+        }
+
+    }
+
+    class LayoutManager: RecyclerView.LayoutManager() {
+
+        override fun generateDefaultLayoutParams(): RecyclerView.LayoutParams {
+
+            return RecyclerView.LayoutParams(100,100)
+        }
+
+    }
+
     @Mock
+    val scrollListener = EndlessRecyclerViewScrollListener(LayoutManager(), ScrollListenerDelegate())
+
     private lateinit var sut: RecipeListViewModel
 
     // Tests
@@ -53,66 +75,62 @@ class RecipeViewModelTest {
                 recipe.title.contains(query)
             })
         }
+        `when`(scrollListener.resetState()).then {  }
 
         sut = RecipeListViewModel(recipeRepository)
+        sut.scrollListener = scrollListener
     }
 
     @Test
-    fun onQueryTextChanged_withEmptyQuery_YieldsEmptyRecipeList() {
+    fun sendNewRequest_withEmptyQuery_YieldsEmptyRecipeList() {
 
-        sut.onQueryTextListener.onQueryTextChange("")
+        sut.sendNewRequest("")
 
         assertThat(sut.recipeList.value!!.size, `is`(0))
 
     }
 
     @Test
-    fun onQueryTextChanged_withNonEmptyQuery_YieldsNonEmptyRecipeList() {
+    fun sendNewRequest_withNonEmptyQuery_YieldsNonEmptyRecipeList() {
 
-        sut.onQueryTextListener.onQueryTextChange("test")
+        sut.sendNewRequest("test")
 
         assertThat(sut.recipeList.value!!.size, `is`(1))
 
     }
 
     @Test
-    fun onQueryTextChanged_withEmptyQuery_hidesLoadingIndicator() {
+    fun sendNewRequest_withEmptyQuery_hidesLoadingIndicator() {
 
-        sut.onQueryTextListener.onQueryTextChange("")
-
-        assertThat(sut.loadingVisibility.value, `is`(View.GONE))
-    }
-
-    @Test
-    fun onQueryTextChanged_withNonEmptyQuery_setsErrorMessageValueToNull() {
-
-        sut.onQueryTextListener.onQueryTextChange("test")
-
-        assertThat(sut.errorMessage.value, nullValue())
-    }
-
-    @Test
-    fun onQueryTextChanged_withEmptyQuery_setsErrorMessageValueToNull() {
-
-        sut.onQueryTextListener.onQueryTextChange("")
-
-        assertThat(sut.errorMessage.value, nullValue())
-    }
-
-    @Test
-    fun onQueryTextChanged_withNonEmptyQuery_hidesLoadingIndicator() {
-
-        sut.onQueryTextListener.onQueryTextChange("test")
+        sut.sendNewRequest("")
 
         assertThat(sut.loadingVisibility.value, `is`(View.GONE))
     }
 
     @Test
-    fun onListScrollChanged_() {
+    fun sendNewRequest_withNonEmptyQuery_setsErrorMessageValueToNull() {
 
-        //sut.onQueryTextListener.onQueryTextChange("test")
+        sut.sendNewRequest("test")
 
-        //assertThat(sut.loadingVisibility.value, `is`(View.GONE))
+        assertThat(sut.errorMessage.value, nullValue())
     }
+
+    @Test
+    fun sendNewRequest_withEmptyQuery_setsErrorMessageValueToNull() {
+
+        sut.sendNewRequest("")
+
+        assertThat(sut.errorMessage.value, nullValue())
+    }
+
+    @Test
+    fun sendNewRequest_withNonEmptyQuery_hidesLoadingIndicator() {
+
+        sut.sendNewRequest("test")
+
+        assertThat(sut.loadingVisibility.value, `is`(View.GONE))
+    }
+
+
 
 }
