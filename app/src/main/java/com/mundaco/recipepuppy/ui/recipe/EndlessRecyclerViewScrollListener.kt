@@ -71,7 +71,7 @@ class EndlessRecyclerViewScrollListener(
 
         // If it isn’t currently loading, we check to see if we have breached
         // the visibleThreshold and need to reload more data.
-        // If we do need to reload some more data, we execute onLoadMore to fetch the data.
+        // If we do need to reload some more data, we execute onEndOfPageReached to fetch the data.
         // threshold should reflect how many total columns there are too
 
         // If the total item count is zero and the previous isn't, assume the
@@ -93,11 +93,11 @@ class EndlessRecyclerViewScrollListener(
 
         // If it isn’t currently loading, we check to see if we have breached
         // the visibleThreshold and need to reload more data.
-        // If we do need to reload some more data, we execute onLoadMore to fetch the data.
+        // If we do need to reload some more data, we execute onEndOfPageReached to fetch the data.
         // threshold should reflect how many total columns there are too
         if (!loading && lastVisibleItemPosition + visibleThreshold > totalItemCount) {
             currentPage++
-            onLoadMore(currentPage, totalItemCount, view)
+            onEndOfPageReached(currentPage, totalItemCount, view)
             loading = true
         }
     }
@@ -110,7 +110,7 @@ class EndlessRecyclerViewScrollListener(
     }
 
     // Defines the process for actually loading more data based on page
-    private fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView) {
-        delegate.onLoadMore(page, totalItemsCount, view)
+    private fun onEndOfPageReached(page: Int, totalItemsCount: Int, view: RecyclerView) {
+        delegate.onEndOfPageReached(page, totalItemsCount, view)
     }
 }

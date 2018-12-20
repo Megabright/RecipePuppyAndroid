@@ -9,18 +9,19 @@ import com.mundaco.recipepuppy.base.BaseViewModel
 import com.mundaco.recipepuppy.data.RecipeRepository
 import com.mundaco.recipepuppy.data.model.Recipe
 import com.mundaco.recipepuppy.data.model.RecipeRequest
-import com.mundaco.recipepuppy.domain.RecipeSearchInteractor
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
-class RecipeListViewModel(recipeRepository: RecipeRepository) : BaseViewModel(), EndlessRecyclerViewScrollListenerDelegate {
-
+class RecipeListViewModel(private val recipeRepository: RecipeRepository):
+    BaseViewModel(),
+    EndlessRecyclerViewScrollListenerDelegate
+{
     private lateinit var subscription: Disposable
 
-    private val recipeSearchUseCase = RecipeSearchInteractor(recipeRepository)
+    //private val recipeSearchUseCase = RecipeSearchInteractor(recipeRepository)
 
-    private var recipeRequest = RecipeRequest("")
+    private var recipeRequest = RecipeRequest()
 
     val recipeList: MutableLiveData<List<Recipe>> = MutableLiveData()
 
@@ -52,15 +53,14 @@ class RecipeListViewModel(recipeRepository: RecipeRepository) : BaseViewModel(),
         scrollPosition.value = 0
         scrollListener.resetState()
 
-
-        recipeRequest.new(query)
+        recipeRequest.query = query
 
         searchRecipes()
     }
 
     private fun newPageRequest(page: Int) {
 
-        recipeRequest.new(page)
+        recipeRequest.page = page
 
         searchRecipes()
 
@@ -69,7 +69,7 @@ class RecipeListViewModel(recipeRepository: RecipeRepository) : BaseViewModel(),
 
     private fun searchRecipes() {
 
-        subscription = recipeSearchUseCase.searchRecipes(recipeRequest)
+        subscription = recipeRepository.searchRecipes(recipeRequest)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { onRetrieveRecipeListStart() }
@@ -103,7 +103,7 @@ class RecipeListViewModel(recipeRepository: RecipeRepository) : BaseViewModel(),
         subscription.dispose()
     }
 
-    override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView) {
+    override fun onEndOfPageReached(page: Int, totalItemsCount: Int, view: RecyclerView) {
         newPageRequest(page + 1)
     }
 

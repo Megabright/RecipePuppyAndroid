@@ -3,19 +3,17 @@ package com.mundaco.recipepuppy.data.model
 import android.arch.persistence.room.Entity
 
 @Entity(primaryKeys = ["query","page"])
-data class RecipeRequest(
-    var query: String,
-    var page: Int = 1,
-    var results: List<Recipe>? = null
-) {
-    fun new(query: String, page: Int = 1) {
-        this.query = query
-        this.page = page
-        this.results = null
-    }
+class RecipeRequest(query: String = "", page: Int = 1, var results: List<Recipe>? = null) {
 
-    fun new(page: Int) {
-        this.page = page
-        this.results = null
-    }
+    var query: String = query
+        set(value) {
+            field = value
+            results = null
+        }
+    var page: Int = page
+        set(value) {
+            field = value
+            results = null
+        }
+
 }
