@@ -14,6 +14,7 @@ import android.view.inputmethod.InputMethodManager
 import com.mundaco.recipepuppy.R
 import com.mundaco.recipepuppy.databinding.ActivityRecipeListBinding
 import com.mundaco.recipepuppy.injection.ViewModelFactory
+import kotlinx.android.synthetic.main.activity_recipe_list.*
 
 
 class RecipeListActivity : AppCompatActivity() {
@@ -30,12 +31,7 @@ class RecipeListActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_recipe_list)
         binding.recipeList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.recipeList.adapter = RecipeListAdapter()
-        binding.recipeList.setOnTouchListener { v, _ ->
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(v.windowToken, 0)
-
-            false
-        }
+        binding.recipeList.setOnTouchListener { _,_ -> hideKeyboard();false }
 
         viewModel = ViewModelProviders.of(this, ViewModelFactory(applicationContext)).get(RecipeListViewModel::class.java)
         viewModel.errorMessage.observe(this, Observer {
@@ -46,15 +42,26 @@ class RecipeListActivity : AppCompatActivity() {
         viewModel.scrollListener = EndlessRecyclerViewScrollListener(binding.recipeList.layoutManager!!,viewModel)
     }
 
+    override fun onResume() {
+        super.onResume()
+        hideKeyboard()
+    }
+
     private fun showError(@StringRes errorMessage:Int){
         errorSnackBar = Snackbar.make(binding.root, errorMessage, Snackbar.LENGTH_INDEFINITE)
         errorSnackBar?.setAction(R.string.retry, viewModel.errorClickListener)
         errorSnackBar?.show()
     }
 
-    private fun hideError(){
+    private fun hideError() {
         errorSnackBar?.dismiss()
     }
 
+    private fun hideKeyboard() {
 
+        (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+            .hideSoftInputFromWindow(root_layout.windowToken, 0)
+
+        root_layout.requestFocus()
+    }
 }
