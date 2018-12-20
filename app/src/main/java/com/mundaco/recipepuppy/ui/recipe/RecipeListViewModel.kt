@@ -3,7 +3,6 @@ package com.mundaco.recipepuppy.ui.recipe
 import android.arch.lifecycle.MutableLiveData
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
-import android.util.Log
 import android.view.View
 import com.mundaco.recipepuppy.R
 import com.mundaco.recipepuppy.base.BaseViewModel
@@ -48,7 +47,7 @@ class RecipeListViewModel(recipeRepository: RecipeRepository) : BaseViewModel(),
 
     private fun newSearchRequest(query: String) {
 
-        recipeList.value = mutableListOf()
+        recipeList.value = emptyList()
 
         scrollPosition.value = 0
         scrollListener.resetState()
@@ -105,7 +104,6 @@ class RecipeListViewModel(recipeRepository: RecipeRepository) : BaseViewModel(),
     }
 
     override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView) {
-        Log.d("ScrollListener","onLoadMore(page: $page, totalItemsCount: $totalItemsCount)")
         newPageRequest(page + 1)
     }
 
