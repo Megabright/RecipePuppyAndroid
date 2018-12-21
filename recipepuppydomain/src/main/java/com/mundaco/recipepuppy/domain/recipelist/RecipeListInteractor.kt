@@ -53,7 +53,9 @@ class RecipeListInteractor(private val recipeRepository: RecipeRepository):
 
     override fun sendCurrentRequest() {
 
-        subscription = recipeRepository.searchRecipes(recipeRequest)
+        if(recipeRequest.query.isNotEmpty()) {
+
+            subscription = recipeRepository.searchRecipes(recipeRequest)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { onRetrieveRecipeListStart() }
@@ -62,7 +64,12 @@ class RecipeListInteractor(private val recipeRepository: RecipeRepository):
                     { result -> onRetrieveRecipeListSuccess(result) },
                     { error -> onRetrieveRecipeListError(error) }
                 )
-
+        }
+        else {
+            onRetrieveRecipeListStart()
+            recipeList.value = emptyList()
+            onRetrieveRecipeListFinish()
+        }
     }
 
     private fun onRetrieveRecipeListStart() {

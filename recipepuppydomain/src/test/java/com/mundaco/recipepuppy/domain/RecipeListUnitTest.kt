@@ -1,15 +1,12 @@
-package com.mundaco.recipepuppy
-
+package com.mundaco.recipepuppy.domain
 import android.arch.core.executor.testing.InstantTaskExecutorRule
-import android.view.View
 import com.mundaco.recipepuppy.data.RecipeRepository
 import com.mundaco.recipepuppy.data.model.Recipe
 import com.mundaco.recipepuppy.data.model.RecipeRequest
+import com.mundaco.recipepuppy.domain.recipelist.RecipeListInteractor
 import com.mundaco.recipepuppy.domain.rules.RxImmediateSchedulerRule
-import com.mundaco.recipepuppy.ui.recipelist.RecipeListViewModel
 import io.reactivex.Observable
 import org.hamcrest.CoreMatchers.`is`
-import org.hamcrest.CoreMatchers.nullValue
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
 import org.junit.Rule
@@ -19,7 +16,7 @@ import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnit
 
-class RecipeViewModelTest {
+class RecipeListUnitTest {
 
     @Rule
     @JvmField
@@ -46,13 +43,13 @@ class RecipeViewModelTest {
         Recipe("Sixth test title","test","test","test")
     )
 
-    private lateinit var sut: RecipeListViewModel
+    private lateinit var sut: RecipeListInteractor
 
     // Tests
     @Before
     fun setUp() {
 
-        sut = RecipeListViewModel(recipeRepository)
+        sut = RecipeListInteractor(recipeRepository)
 
 
         `when`(recipeRepository.searchRecipes(sut.recipeRequest)).thenAnswer { invocation ->
@@ -80,38 +77,6 @@ class RecipeViewModelTest {
 
         assertThat(sut.recipeList.value!!.size, `is`(2))
 
-    }
-
-    @Test
-    fun loadNewQueryResults_withEmptyQuery_hidesLoadingIndicator() {
-
-        sut.loadNewQueryResults("")
-
-        assertThat(sut.loadingVisibility.value, `is`(View.GONE))
-    }
-
-    @Test
-    fun loadNewQueryResults_withNonEmptyQuery_setsErrorMessageValueToNull() {
-
-        sut.loadNewQueryResults("test")
-
-        assertThat(sut.errorMessage.value, nullValue())
-    }
-
-    @Test
-    fun loadNewQueryResults_withEmptyQuery_setsErrorMessageValueToNull() {
-
-        sut.loadNewQueryResults("")
-
-        assertThat(sut.errorMessage.value, nullValue())
-    }
-
-    @Test
-    fun loadNewQueryResults_withNonEmptyQuery_hidesLoadingIndicator() {
-
-        sut.loadNewQueryResults("test")
-
-        assertThat(sut.loadingVisibility.value, `is`(View.GONE))
     }
 
     @Test
@@ -161,4 +126,6 @@ class RecipeViewModelTest {
 
         assertThat(sut.recipeList.value!!.size, `is`(2))
     }
+
+    // TODO: Test RequestState's
 }
