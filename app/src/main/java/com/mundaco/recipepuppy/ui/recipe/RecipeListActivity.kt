@@ -31,9 +31,15 @@ class RecipeListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_recipe_list)
+
         binding.recipeList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.recipeList.adapter = RecipeListAdapter()
         binding.recipeList.setOnTouchListener { _,_ -> hideKeyboard();false }
+
+        binding.scrollListener = EndlessRecyclerViewScrollListener(binding.recipeList.layoutManager!!)
+        (binding.scrollListener as EndlessRecyclerViewScrollListener).endOfPageReached.observe(this, Observer {
+            if(it != null) viewModel.onEndOfPageReached(it)
+        })
 
         viewModel = ViewModelProviders.of(this, ViewModelFactory(applicationContext)).get(RecipeListViewModel::class.java)
         viewModel.errorMessage.observe(this, Observer {
@@ -46,11 +52,6 @@ class RecipeListActivity : AppCompatActivity() {
         })
 
         binding.viewModel = viewModel
-
-        viewModel.scrollListener = EndlessRecyclerViewScrollListener(binding.recipeList.layoutManager!!)
-        viewModel.scrollListener.endOfPageReached.observe(this, Observer {
-            if(it != null) viewModel.onEndOfPageReached(it)
-        })
     }
 
     override fun onResume() {

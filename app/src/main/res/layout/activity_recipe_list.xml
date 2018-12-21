@@ -3,6 +3,9 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
+                name="scrollListener"
+                type="com.mundaco.recipepuppy.ui.recipe.EndlessRecyclerViewScrollListener" />
+        <variable
                 name="viewModel"
                 type="com.mundaco.recipepuppy.ui.recipe.RecipeListViewModel" />
     </data>
@@ -29,7 +32,7 @@
                 android:layout_weight="1"
                 app:mutableRecipeList="@{viewModel.getRecipeList()}"
                 app:mutableScrollPosition="@{viewModel.getScrollPosition()}"
-                app:onScrollListener="@{viewModel.scrollListener}"
+                app:onScrollListener="@{scrollListener}"
 
         />
         <ProgressBar

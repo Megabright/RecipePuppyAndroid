@@ -31,7 +31,6 @@ class RecipeListViewModel(private val recipeRepository: RecipeRepository):
     val recipeList: MutableLiveData<List<Recipe>> = MutableLiveData()
 
     val scrollPosition: MutableLiveData<Int> = MutableLiveData()
-    lateinit var scrollListener: EndlessRecyclerViewScrollListener
 
     val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
 
