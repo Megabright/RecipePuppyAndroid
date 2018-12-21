@@ -3,6 +3,7 @@ package com.mundaco.recipepuppy.ui.recipe
 import android.arch.lifecycle.MutableLiveData
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
+import android.util.Log
 import android.view.View
 import com.mundaco.recipepuppy.R
 import com.mundaco.recipepuppy.base.BaseViewModel
@@ -65,6 +66,7 @@ class RecipeListViewModel(private val recipeRepository: RecipeRepository):
         scrollListener.resetState()
 
         recipeRequest.query = query
+        recipeRequest.page = 1
 
         if(recipeRequest.query.isNotEmpty()) sendCurrentRequest()
     }
@@ -79,6 +81,8 @@ class RecipeListViewModel(private val recipeRepository: RecipeRepository):
 
 
     override fun sendCurrentRequest() {
+
+        Log.d("RecipeListViewModel", "sendCurrentRequest(${recipeRequest.query},${recipeRequest.page},${recipeRequest.results})")
 
         subscription = recipeRepository.searchRecipes(recipeRequest)
             .subscribeOn(Schedulers.io())
