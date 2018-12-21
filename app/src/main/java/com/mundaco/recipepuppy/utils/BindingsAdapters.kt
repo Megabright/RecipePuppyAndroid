@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.TextView
 import com.mundaco.recipepuppy.data.model.Recipe
-import com.mundaco.recipepuppy.ui.recipe.RecipeListAdapter
+import com.mundaco.recipepuppy.ui.recipelist.RecipeListAdapter
 import com.mundaco.recipepuppy.utils.extension.getParentActivity
 
 

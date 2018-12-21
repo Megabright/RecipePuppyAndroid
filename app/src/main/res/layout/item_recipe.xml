@@ -5,7 +5,7 @@
     <data>
         <variable
                 name="viewModel"
-                type="com.mundaco.recipepuppy.ui.recipe.RecipeViewModel" />
+                type="com.mundaco.recipepuppy.ui.recipedetail.RecipeViewModel" />
     </data>
 
     <android.support.constraint.ConstraintLayout

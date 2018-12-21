@@ -1,4 +1,4 @@
-package com.mundaco.recipepuppy.domain
+package com.mundaco.recipepuppy.domain.recipelist.usecases
 
 interface RetryButtonClickedUseCase {
 

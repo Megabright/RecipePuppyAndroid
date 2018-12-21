@@ -4,10 +4,10 @@
     <data>
         <variable
                 name="scrollListener"
-                type="com.mundaco.recipepuppy.ui.recipe.EndlessRecyclerViewScrollListener" />
+                type="com.mundaco.recipepuppy.ui.recipelist.EndlessRecyclerViewScrollListener" />
         <variable
                 name="viewModel"
-                type="com.mundaco.recipepuppy.ui.recipe.RecipeListViewModel" />
+                type="com.mundaco.recipepuppy.ui.recipelist.RecipeListViewModel" />
     </data>
     <LinearLayout
             android:id="@+id/root_layout"

@@ -1,4 +1,4 @@
-package com.mundaco.recipepuppy.ui.recipe
+package com.mundaco.recipepuppy.ui.recipelist
 
 import android.databinding.DataBindingUtil
 import android.support.v7.widget.RecyclerView
@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import com.mundaco.recipepuppy.R
 import com.mundaco.recipepuppy.data.model.Recipe
 import com.mundaco.recipepuppy.databinding.ItemRecipeBinding
+import com.mundaco.recipepuppy.ui.recipedetail.RecipeViewModel
 import com.mundaco.recipepuppy.utils.extension.getParentActivity
 
 class RecipeListAdapter: RecyclerView.Adapter<RecipeListAdapter.ViewHolder>() {

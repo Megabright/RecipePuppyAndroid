@@ -6,7 +6,7 @@ import com.mundaco.recipepuppy.data.RecipeRepository
 import com.mundaco.recipepuppy.data.model.Recipe
 import com.mundaco.recipepuppy.data.model.RecipeRequest
 import com.mundaco.recipepuppy.rules.RxImmediateSchedulerRule
-import com.mundaco.recipepuppy.ui.recipe.RecipeListViewModel
+import com.mundaco.recipepuppy.ui.recipelist.RecipeListViewModel
 import io.reactivex.Observable
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.nullValue
@@ -115,48 +115,50 @@ class RecipeViewModelTest {
     }
 
     @Test
-    fun loadNextPageResults_withEmptyQueryAndPageOne_ReturnsAnEmptyRecipeList() {
+    fun loadNextPageResults_withEmptyQuery_ReturnsAnEmptyRecipeList() {
 
         sut.loadNewQueryResults("")
-        sut.loadNextPageResults(1)
+        sut.loadNextPageResults()
 
         assertThat(sut.recipeList.value!!.size, `is`(0))
     }
 
     @Test
-    fun loadNextPageResults_withEmptyQueryAndPageTwo_ReturnsAnEmptyRecipeList() {
+    fun loadNextPageResults_twiceWithEmptyQuery_ReturnsAnEmptyRecipeList() {
 
         sut.loadNewQueryResults("")
-        sut.loadNextPageResults(2)
+        sut.loadNextPageResults()
+        sut.loadNextPageResults()
 
         assertThat(sut.recipeList.value!!.size, `is`(0))
     }
 
     @Test
-    fun loadNextPageResults_withNonEmptyQueryAndPageOne_ReturnsTwoRecipes() {
+    fun loadNextPageResults_withNonEmptyQuery_ReturnsFourRecipes() {
 
         sut.loadNewQueryResults("test")
-        sut.loadNextPageResults(1)
+        sut.loadNextPageResults()
+
+        assertThat(sut.recipeList.value!!.size, `is`(4))
+    }
+
+    @Test
+    fun loadNextPageResults_twiceWithNonEmptyQuery_ReturnsSixRecipes() {
+
+        sut.loadNewQueryResults("test")
+        sut.loadNextPageResults()
+        sut.loadNextPageResults()
+
+        assertThat(sut.recipeList.value!!.size, `is`(6))
+    }
+
+    @Test
+    fun loadNewQueryResults_afterLoadNextPageWithNonEmptyQuery_ReturnsTwoRecipes() {
+
+        sut.loadNewQueryResults("test")
+        sut.loadNextPageResults()
+        sut.loadNewQueryResults("test")
 
         assertThat(sut.recipeList.value!!.size, `is`(2))
-    }
-
-    @Test
-    fun loadNextPageResults_withNonEmptyQueryAndPageTwo_ReturnsFourRecipes() {
-
-        sut.loadNewQueryResults("test")
-        sut.loadNextPageResults(2)
-
-        assertThat(sut.recipeList.value!!.size, `is`(4))
-    }
-
-    @Test
-    fun loadNextPageResults_withNonEmptyQueryAndPagePreviousToPageTwo_ReturnsFourRecipes() {
-
-        sut.loadNewQueryResults("test")
-        sut.loadNextPageResults(2)
-        sut.loadNextPageResults(1)
-
-        assertThat(sut.recipeList.value!!.size, `is`(4))
     }
 }

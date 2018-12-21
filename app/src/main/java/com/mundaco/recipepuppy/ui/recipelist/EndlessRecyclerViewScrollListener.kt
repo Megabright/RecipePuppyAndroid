@@ -1,4 +1,4 @@
-package com.mundaco.recipepuppy.ui.recipe
+package com.mundaco.recipepuppy.ui.recipelist
 
 import android.arch.lifecycle.MutableLiveData
 import android.support.v7.widget.GridLayoutManager

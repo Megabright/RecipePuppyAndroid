@@ -1,4 +1,4 @@
-package com.mundaco.recipepuppy.ui.recipe
+package com.mundaco.recipepuppy.ui.recipelist
 
 import android.arch.lifecycle.MutableLiveData
 import android.support.v7.widget.SearchView
@@ -8,10 +8,10 @@ import com.mundaco.recipepuppy.base.BaseViewModel
 import com.mundaco.recipepuppy.data.RecipeRepository
 import com.mundaco.recipepuppy.data.model.Recipe
 import com.mundaco.recipepuppy.data.model.RecipeRequest
-import com.mundaco.recipepuppy.domain.ListItemClickedUseCase
-import com.mundaco.recipepuppy.domain.ListScrolledToBottomUseCase
-import com.mundaco.recipepuppy.domain.RetryButtonClickedUseCase
-import com.mundaco.recipepuppy.domain.SearchTextChangedUseCase
+import com.mundaco.recipepuppy.domain.recipelist.usecases.ListItemClickedUseCase
+import com.mundaco.recipepuppy.domain.recipelist.usecases.ListScrolledToBottomUseCase
+import com.mundaco.recipepuppy.domain.recipelist.usecases.RetryButtonClickedUseCase
+import com.mundaco.recipepuppy.domain.recipelist.usecases.SearchTextChangedUseCase
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -66,13 +66,10 @@ class RecipeListViewModel(private val recipeRepository: RecipeRepository):
         sendCurrentRequest()
     }
 
-    override fun loadNextPageResults(page: Int) {
+    override fun loadNextPageResults() {
 
-        if(page == recipeRequest.page + 1) {
-            recipeRequest.page = page
-
-            sendCurrentRequest()
-        }
+        recipeRequest.page += 1
+        sendCurrentRequest()
 
     }
 
@@ -119,7 +116,7 @@ class RecipeListViewModel(private val recipeRepository: RecipeRepository):
     }
 
     fun onEndOfPageReached(page: Int) {
-        loadNextPageResults(page + 1)
+        loadNextPageResults()
     }
 
 }

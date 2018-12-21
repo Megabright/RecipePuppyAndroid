@@ -6,8 +6,8 @@ import android.content.Context
 import com.mundaco.recipepuppy.data.RecipeRepositoryImpl
 import com.mundaco.recipepuppy.injection.component.DaggerRepositoryInjector
 import com.mundaco.recipepuppy.injection.module.DaoModule
-import com.mundaco.recipepuppy.ui.recipe.RecipeListViewModel
-import com.mundaco.recipepuppy.ui.recipe.RecipeViewModel
+import com.mundaco.recipepuppy.ui.recipelist.RecipeListViewModel
+import com.mundaco.recipepuppy.ui.recipedetail.RecipeViewModel
 
 class ViewModelFactory(private val context: Context): ViewModelProvider.Factory {
 

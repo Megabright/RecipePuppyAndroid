@@ -1,4 +1,4 @@
-package com.mundaco.recipepuppy.ui.recipe
+package com.mundaco.recipepuppy.ui.recipelist
 
 import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
@@ -16,6 +16,7 @@ import com.mundaco.recipepuppy.R
 import com.mundaco.recipepuppy.data.model.Recipe
 import com.mundaco.recipepuppy.databinding.ActivityRecipeListBinding
 import com.mundaco.recipepuppy.injection.ViewModelFactory
+import com.mundaco.recipepuppy.ui.recipedetail.RecipeDetailActivity
 import kotlinx.android.synthetic.main.activity_recipe_list.*
 
 

@@ -1,4 +1,4 @@
-package com.mundaco.recipepuppy.ui.recipe
+package com.mundaco.recipepuppy.ui.recipedetail
 
 import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
