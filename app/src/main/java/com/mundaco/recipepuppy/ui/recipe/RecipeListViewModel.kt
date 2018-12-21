@@ -63,8 +63,7 @@ class RecipeListViewModel(private val recipeRepository: RecipeRepository):
         recipeList.value = emptyList()
 
         scrollPosition.value = 0
-        scrollListener.resetState()
-
+       
         recipeRequest.query = query
         recipeRequest.page = 1
 
@@ -120,6 +119,7 @@ class RecipeListViewModel(private val recipeRepository: RecipeRepository):
     }
 
     override fun onEndOfPageReached(page: Int, totalItemsCount: Int, view: RecyclerView) {
+        Log.d("RecipeListViewModel", "endOfPageReached($page,$totalItemsCount)")
         requestNextPage(page)
     }
 
