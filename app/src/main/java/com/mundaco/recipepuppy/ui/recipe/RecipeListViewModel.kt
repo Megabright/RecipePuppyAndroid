@@ -76,7 +76,6 @@ class RecipeListViewModel(private val recipeRepository: RecipeRepository):
 
     }
 
-
     override fun sendCurrentRequest() {
 
         Log.d("RecipeListViewModel", "sendCurrentRequest(${recipeRequest.query},${recipeRequest.page},${recipeRequest.results})")
