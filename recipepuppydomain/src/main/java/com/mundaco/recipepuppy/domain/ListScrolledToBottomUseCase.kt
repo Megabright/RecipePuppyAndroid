@@ -2,5 +2,5 @@ package com.mundaco.recipepuppy.domain
 
 interface ListScrolledToBottomUseCase {
 
-    fun requestNextPage(page: Int)
+    fun loadNextPageResults(page: Int)
 }

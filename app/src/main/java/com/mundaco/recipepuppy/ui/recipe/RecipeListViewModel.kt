@@ -40,12 +40,12 @@ class RecipeListViewModel(private val recipeRepository: RecipeRepository):
 
     val onQueryTextListener = object: SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
-            sendNewRequest(query!!)
+            loadNewQueryResults(query!!)
             return false
         }
 
         override fun onQueryTextChange(query: String?): Boolean {
-            sendNewRequest(query!!)
+            loadNewQueryResults(query!!)
             return false
         }
     }
@@ -54,7 +54,7 @@ class RecipeListViewModel(private val recipeRepository: RecipeRepository):
         selectedRecipe.value = recipe
     }
 
-    override fun sendNewRequest(query: String) {
+    override fun loadNewQueryResults(query: String) {
 
         recipeList.value = emptyList()
 
@@ -72,7 +72,7 @@ class RecipeListViewModel(private val recipeRepository: RecipeRepository):
         }
     }
 
-    override fun requestNextPage(page: Int) {
+    override fun loadNextPageResults(page: Int) {
 
         recipeRequest.page = page + 1
 
@@ -81,8 +81,6 @@ class RecipeListViewModel(private val recipeRepository: RecipeRepository):
     }
 
     override fun sendCurrentRequest() {
-
-        //Log.d("RecipeListViewModel", "sendCurrentRequest(${recipeRequest.query},${recipeRequest.page},${recipeRequest.results})")
 
         subscription = recipeRepository.searchRecipes(recipeRequest)
             .subscribeOn(Schedulers.io())
@@ -120,8 +118,7 @@ class RecipeListViewModel(private val recipeRepository: RecipeRepository):
     }
 
     fun onEndOfPageReached(page: Int) {
-        //Log.d("RecipeListViewModel", "endOfPageReached($page)")
-        requestNextPage(page)
+        loadNextPageResults(page)
     }
 
 }

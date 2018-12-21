@@ -59,51 +59,51 @@ class RecipeViewModelTest {
     }
 
     @Test
-    fun sendNewRequest_withEmptyQuery_YieldsEmptyRecipeList() {
+    fun loadNewQueryResults_withEmptyQuery_YieldsEmptyRecipeList() {
 
-        sut.sendNewRequest("")
+        sut.loadNewQueryResults("")
 
         assertThat(sut.recipeList.value!!.size, `is`(0))
 
     }
 
     @Test
-    fun sendNewRequest_withNonEmptyQuery_YieldsNonEmptyRecipeList() {
+    fun loadNewQueryResults_withNonEmptyQuery_YieldsNonEmptyRecipeList() {
 
-        sut.sendNewRequest("test")
+        sut.loadNewQueryResults("test")
 
         assertThat(sut.recipeList.value!!.size, `is`(1))
 
     }
 
     @Test
-    fun sendNewRequest_withEmptyQuery_hidesLoadingIndicator() {
+    fun loadNewQueryResults_withEmptyQuery_hidesLoadingIndicator() {
 
-        sut.sendNewRequest("")
+        sut.loadNewQueryResults("")
 
         assertThat(sut.loadingVisibility.value, `is`(View.GONE))
     }
 
     @Test
-    fun sendNewRequest_withNonEmptyQuery_setsErrorMessageValueToNull() {
+    fun loadNewQueryResults_withNonEmptyQuery_setsErrorMessageValueToNull() {
 
-        sut.sendNewRequest("test")
-
-        assertThat(sut.errorMessage.value, nullValue())
-    }
-
-    @Test
-    fun sendNewRequest_withEmptyQuery_setsErrorMessageValueToNull() {
-
-        sut.sendNewRequest("")
+        sut.loadNewQueryResults("test")
 
         assertThat(sut.errorMessage.value, nullValue())
     }
 
     @Test
-    fun sendNewRequest_withNonEmptyQuery_hidesLoadingIndicator() {
+    fun loadNewQueryResults_withEmptyQuery_setsErrorMessageValueToNull() {
 
-        sut.sendNewRequest("test")
+        sut.loadNewQueryResults("")
+
+        assertThat(sut.errorMessage.value, nullValue())
+    }
+
+    @Test
+    fun loadNewQueryResults_withNonEmptyQuery_hidesLoadingIndicator() {
+
+        sut.loadNewQueryResults("test")
 
         assertThat(sut.loadingVisibility.value, `is`(View.GONE))
     }
