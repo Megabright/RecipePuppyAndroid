@@ -4,10 +4,11 @@ import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import android.content.Context
 import com.mundaco.recipepuppy.data.RecipeRepositoryImpl
+import com.mundaco.recipepuppy.domain.recipelist.RecipeListInteractor
 import com.mundaco.recipepuppy.injection.component.DaggerRepositoryInjector
 import com.mundaco.recipepuppy.injection.module.DaoModule
-import com.mundaco.recipepuppy.ui.recipelist.RecipeListViewModel
 import com.mundaco.recipepuppy.ui.recipedetail.RecipeViewModel
+import com.mundaco.recipepuppy.ui.recipelist.RecipeListViewModel
 
 class ViewModelFactory(private val context: Context): ViewModelProvider.Factory {
 
@@ -15,7 +16,8 @@ class ViewModelFactory(private val context: Context): ViewModelProvider.Factory 
         if (modelClass.isAssignableFrom(RecipeListViewModel::class.java)) {
 
             val recipeRepository = RecipeRepositoryImpl.getInstance()
-            val recipeListViewModel = RecipeListViewModel(recipeRepository)
+            val interactor = RecipeListInteractor(recipeRepository)
+            val recipeListViewModel = RecipeListViewModel(interactor)
 
             // Dependency Injection
             DaggerRepositoryInjector

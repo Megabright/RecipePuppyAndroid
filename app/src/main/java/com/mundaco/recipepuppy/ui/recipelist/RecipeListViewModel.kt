@@ -5,15 +5,12 @@ import android.support.v7.widget.SearchView
 import android.view.View
 import com.mundaco.recipepuppy.R
 import com.mundaco.recipepuppy.base.BaseViewModel
-import com.mundaco.recipepuppy.data.RecipeRepository
 import com.mundaco.recipepuppy.data.model.Recipe
 import com.mundaco.recipepuppy.domain.recipelist.RecipeListInteractor
 
-class RecipeListViewModel(recipeRepository: RecipeRepository):
+class RecipeListViewModel(val interactor: RecipeListInteractor):
     BaseViewModel()
 {
-    var interactor = RecipeListInteractor(recipeRepository)
-
     val scrollPosition: MutableLiveData<Int> = MutableLiveData()
 
     val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
