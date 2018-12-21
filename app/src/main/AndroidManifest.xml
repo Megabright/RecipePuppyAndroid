@@ -12,7 +12,7 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".ui.recipelist.RecipeListActivity">
+        <activity android:name="com.mundaco.recipepuppy.ui.recipelist.RecipeListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <action android:name="android.intent.action.VIEW" />
@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".ui.recipedetail.RecipeDetailActivity"
+                android:name="com.mundaco.recipepuppy.ui.recipedetail.RecipeDetailActivity"
                 android:parentActivityName="com.mundaco.recipepuppy.ui.recipelist.RecipeListActivity" >
 
         </activity>

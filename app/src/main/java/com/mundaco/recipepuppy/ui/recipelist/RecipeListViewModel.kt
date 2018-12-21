@@ -32,28 +32,22 @@ class RecipeListViewModel(val interactor: RecipeListInteractor):
         }
     }
 
-    init {
+    fun onRequestStateChanged(state: RecipeListInteractor.RequestState) {
 
-        interactor.requestState.observeForever {
-
-            when (it) {
-                RecipeListInteractor.RequestState.START -> {
-                    loadingVisibility.value = View.VISIBLE
-                    errorMessage.value = null
-                }
-                RecipeListInteractor.RequestState.FINISH -> {
-                    loadingVisibility.value = View.GONE
-                }
-                RecipeListInteractor.RequestState.ERROR -> {
-                    errorMessage.value = R.string.recipe_error
-                }
-                else -> {
-                }
+        when (state) {
+            RecipeListInteractor.RequestState.START -> {
+                loadingVisibility.value = View.VISIBLE
+                errorMessage.value = null
+            }
+            RecipeListInteractor.RequestState.FINISH -> {
+                loadingVisibility.value = View.GONE
+            }
+            RecipeListInteractor.RequestState.ERROR -> {
+                errorMessage.value = R.string.recipe_error
+            }
+            else -> {
             }
         }
-
-
-
     }
 
     fun showRecipe(recipe: Recipe) {

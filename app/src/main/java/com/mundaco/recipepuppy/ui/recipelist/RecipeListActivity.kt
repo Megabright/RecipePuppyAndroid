@@ -51,6 +51,9 @@ class RecipeListActivity : AppCompatActivity() {
             intent.putExtra("recipe", it)
             startActivity(intent)
         })
+        viewModel.interactor.requestState.observe(this, Observer {
+            if(it != null) viewModel.onRequestStateChanged(it)
+        })
 
         binding.viewModel = viewModel
     }

@@ -81,4 +81,5 @@ class RecipeViewModelTest {
     }
 
     // TODO: Test paging
+    // TODO: Test navigation to detail view
 }
