@@ -66,7 +66,7 @@ class RecipeListViewModel(private val recipeRepository: RecipeRepository):
 
         recipeRequest.query = query
 
-        sendCurrentRequest()
+        if(recipeRequest.query.isNotEmpty()) sendCurrentRequest()
     }
 
     override fun requestNextPage(page: Int) {
@@ -89,6 +89,7 @@ class RecipeListViewModel(private val recipeRepository: RecipeRepository):
                 { result -> onRetrieveRecipeListSuccess(result) },
                 { error -> onRetrieveRecipeListError(error) }
             )
+
     }
 
     private fun onRetrieveRecipeListStart() {
