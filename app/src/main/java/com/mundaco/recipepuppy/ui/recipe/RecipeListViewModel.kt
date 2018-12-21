@@ -63,18 +63,12 @@ class RecipeListViewModel(private val recipeRepository: RecipeRepository):
         recipeRequest.query = query
         recipeRequest.page = 1
 
-        if(recipeRequest.query.isEmpty()) {
-            loadingVisibility.value = View.GONE
-            errorMessage.value = null
-        }
-        else {
-            sendCurrentRequest()
-        }
+        sendCurrentRequest()
     }
 
     override fun loadNextPageResults(page: Int) {
 
-        recipeRequest.page = page + 1
+        recipeRequest.page = page
 
         sendCurrentRequest()
 
@@ -82,16 +76,21 @@ class RecipeListViewModel(private val recipeRepository: RecipeRepository):
 
     override fun sendCurrentRequest() {
 
-        subscription = recipeRepository.searchRecipes(recipeRequest)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { onRetrieveRecipeListStart() }
-            .doOnTerminate { onRetrieveRecipeListFinish() }
-            .subscribe(
-                { result -> onRetrieveRecipeListSuccess(result) },
-                { error -> onRetrieveRecipeListError(error) }
-            )
-
+        if(recipeRequest.query.isEmpty()) {
+            loadingVisibility.value = View.GONE
+            errorMessage.value = null
+        }
+        else {
+           subscription = recipeRepository.searchRecipes(recipeRequest)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { onRetrieveRecipeListStart() }
+                .doOnTerminate { onRetrieveRecipeListFinish() }
+                .subscribe(
+                    { result -> onRetrieveRecipeListSuccess(result) },
+                    { error -> onRetrieveRecipeListError(error) }
+                )
+        }
     }
 
     private fun onRetrieveRecipeListStart() {
@@ -118,7 +117,7 @@ class RecipeListViewModel(private val recipeRepository: RecipeRepository):
     }
 
     fun onEndOfPageReached(page: Int) {
-        loadNextPageResults(page)
+        loadNextPageResults(page + 1)
     }
 
 }

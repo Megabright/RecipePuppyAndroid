@@ -48,12 +48,15 @@ class RecipeViewModelTest {
 
         val recipeList = arrayListOf<Recipe>()
         recipeList.add(Recipe("This is a test title","test","test","test"))
+        recipeList.add(Recipe("This is another test title","test","test","test"))
+        recipeList.add(Recipe("This is yet another test title","test","test","test"))
+        recipeList.add(Recipe("And another test title","test","test","test"))
 
         `when`(recipeRepository.searchRecipes(sut.recipeRequest)).thenAnswer { invocation ->
             val req = invocation.getArgument<RecipeRequest>(0)
             req.results = recipeList.filter { recipe ->
                 recipe.title.contains(req.query)
-            }
+            }.subList((req.page - 1) * 2, req.page * 2)
             Observable.just(req)
         }
     }
@@ -72,7 +75,7 @@ class RecipeViewModelTest {
 
         sut.loadNewQueryResults("test")
 
-        assertThat(sut.recipeList.value!!.size, `is`(1))
+        assertThat(sut.recipeList.value!!.size, `is`(2))
 
     }
 
@@ -108,6 +111,22 @@ class RecipeViewModelTest {
         assertThat(sut.loadingVisibility.value, `is`(View.GONE))
     }
 
+    @Test
+    fun loadNextPageResults_withEmptyQueryAndPageOne_ReturnsAnEmptyRecipeList() {
 
+        sut.loadNewQueryResults("")
+        sut.loadNextPageResults(1)
+
+        assertThat(sut.recipeList.value!!.size, `is`(0))
+    }
+
+    @Test
+    fun loadNextPageResults_withNonEmptyQueryAndPageTwo_ReturnsFourRecipes() {
+
+        sut.loadNewQueryResults("test")
+        sut.loadNextPageResults(2)
+
+        assertThat(sut.recipeList.value!!.size, `is`(4))
+    }
 
 }
