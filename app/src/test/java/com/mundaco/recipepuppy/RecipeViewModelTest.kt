@@ -3,11 +3,9 @@ package com.mundaco.recipepuppy
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.view.View
 import com.mundaco.recipepuppy.data.RecipeRepository
-import com.mundaco.recipepuppy.data.model.Recipe
-import com.mundaco.recipepuppy.data.model.RecipeRequest
-import com.mundaco.recipepuppy.domain.rules.RxImmediateSchedulerRule
+import com.mundaco.recipepuppy.domain.recipelist.RecipeListInteractor
+import com.mundaco.recipepuppy.rules.RxImmediateSchedulerRule
 import com.mundaco.recipepuppy.ui.recipelist.RecipeListViewModel
-import io.reactivex.Observable
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.nullValue
 import org.hamcrest.MatcherAssert.assertThat
@@ -16,7 +14,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
 import org.mockito.Mock
-import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnit
 
 class RecipeViewModelTest {
@@ -34,17 +31,12 @@ class RecipeViewModelTest {
     var instantExecutorRule: TestRule = InstantTaskExecutorRule()
 
     // Helpers
+
     @Mock
     lateinit var recipeRepository: RecipeRepository
 
-    private val recipeList = arrayOf(
-        Recipe("This is a test title","test","test","test"),
-        Recipe("This is another test title","test","test","test"),
-        Recipe("This is yet another test title","test","test","test"),
-        Recipe("And another test title","test","test","test"),
-        Recipe("Fifth test title","test","test","test"),
-        Recipe("Sixth test title","test","test","test")
-    )
+    @Mock
+    var interactor = RecipeListInteractor(recipeRepository)
 
     private lateinit var sut: RecipeListViewModel
 
@@ -52,113 +44,41 @@ class RecipeViewModelTest {
     @Before
     fun setUp() {
 
-        sut = RecipeListViewModel(recipeRepository)
-
-
-        `when`(recipeRepository.searchRecipes(sut.recipeRequest)).thenAnswer { invocation ->
-            val req = invocation.getArgument<RecipeRequest>(0)
-            req.results = recipeList.filter { recipe ->
-                recipe.title.contains(req.query)
-            }.subList((req.page - 1) * 2, req.page * 2)
-            Observable.just(req)
-        }
-    }
-
-    @Test
-    fun loadNewQueryResults_withEmptyQuery_YieldsEmptyRecipeList() {
-
-        sut.loadNewQueryResults("")
-
-        assertThat(sut.recipeList.value!!.size, `is`(0))
+        sut = RecipeListViewModel(interactor)
 
     }
 
     @Test
-    fun loadNewQueryResults_withNonEmptyQuery_YieldsNonEmptyRecipeList() {
+    fun onQueryTextChanged_withEmptyQuery_hidesLoadingIndicator() {
 
-        sut.loadNewQueryResults("test")
-
-        assertThat(sut.recipeList.value!!.size, `is`(2))
-
-    }
-
-    @Test
-    fun loadNewQueryResults_withEmptyQuery_hidesLoadingIndicator() {
-
-        sut.loadNewQueryResults("")
+        sut.onQueryTextListener.onQueryTextChange("")
 
         assertThat(sut.loadingVisibility.value, `is`(View.GONE))
     }
 
     @Test
-    fun loadNewQueryResults_withNonEmptyQuery_setsErrorMessageValueToNull() {
+    fun onQueryTextChanged_withNonEmptyQuery_hidesLoadingIndicator() {
 
-        sut.loadNewQueryResults("test")
-
-        assertThat(sut.errorMessage.value, nullValue())
-    }
-
-    @Test
-    fun loadNewQueryResults_withEmptyQuery_setsErrorMessageValueToNull() {
-
-        sut.loadNewQueryResults("")
-
-        assertThat(sut.errorMessage.value, nullValue())
-    }
-
-    @Test
-    fun loadNewQueryResults_withNonEmptyQuery_hidesLoadingIndicator() {
-
-        sut.loadNewQueryResults("test")
+        sut.onQueryTextListener.onQueryTextChange("test")
 
         assertThat(sut.loadingVisibility.value, `is`(View.GONE))
     }
 
     @Test
-    fun loadNextPageResults_withEmptyQuery_ReturnsAnEmptyRecipeList() {
+    fun onQueryTextChange_withNonEmptyQuery_setsErrorMessageValueToNull() {
 
-        sut.loadNewQueryResults("")
-        sut.loadNextPageResults()
+        sut.onQueryTextListener.onQueryTextChange("test")
 
-        assertThat(sut.recipeList.value!!.size, `is`(0))
+        assertThat(sut.errorMessage.value, nullValue())
     }
 
     @Test
-    fun loadNextPageResults_twiceWithEmptyQuery_ReturnsAnEmptyRecipeList() {
+    fun onQueryTextChange_withEmptyQuery_setsErrorMessageValueToNull() {
 
-        sut.loadNewQueryResults("")
-        sut.loadNextPageResults()
-        sut.loadNextPageResults()
+        sut.onQueryTextListener.onQueryTextChange("")
 
-        assertThat(sut.recipeList.value!!.size, `is`(0))
+        assertThat(sut.errorMessage.value, nullValue())
     }
 
-    @Test
-    fun loadNextPageResults_withNonEmptyQuery_ReturnsFourRecipes() {
-
-        sut.loadNewQueryResults("test")
-        sut.loadNextPageResults()
-
-        assertThat(sut.recipeList.value!!.size, `is`(4))
-    }
-
-    @Test
-    fun loadNextPageResults_twiceWithNonEmptyQuery_ReturnsSixRecipes() {
-
-        sut.loadNewQueryResults("test")
-        sut.loadNextPageResults()
-        sut.loadNextPageResults()
-
-        assertThat(sut.recipeList.value!!.size, `is`(6))
-    }
-
-    @Test
-    fun loadNewQueryResults_afterLoadNextPageWithNonEmptyQuery_ReturnsTwoRecipes() {
-
-        sut.loadNewQueryResults("test")
-        sut.loadNextPageResults()
-        sut.loadNewQueryResults("test")
-
-        assertThat(sut.recipeList.value!!.size, `is`(2))
-    }
+    // TODO: Test paging
 }
