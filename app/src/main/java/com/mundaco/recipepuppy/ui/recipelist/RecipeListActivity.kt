@@ -46,7 +46,7 @@ class RecipeListActivity : AppCompatActivity() {
         viewModel.errorMessage.observe(this, Observer {
                 errorMessage -> if(errorMessage != null) showError(errorMessage) else hideError()
         })
-        viewModel.selectedRecipe.observe(this, Observer {
+        viewModel.interactor.selectedRecipe.observe(this, Observer {
             val intent = Intent(applicationContext , RecipeDetailActivity::class.java )
             intent.putExtra("recipe", it)
             startActivity(intent)
