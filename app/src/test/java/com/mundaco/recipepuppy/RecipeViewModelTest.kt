@@ -1,13 +1,11 @@
 package com.mundaco.recipepuppy
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.mundaco.recipepuppy.data.RecipeRepository
 import com.mundaco.recipepuppy.data.model.Recipe
 import com.mundaco.recipepuppy.data.model.RecipeRequest
 import com.mundaco.recipepuppy.rules.RxImmediateSchedulerRule
-import com.mundaco.recipepuppy.ui.recipe.EndlessRecyclerViewScrollListener
 import com.mundaco.recipepuppy.ui.recipe.RecipeListViewModel
 import io.reactivex.Observable
 import org.hamcrest.CoreMatchers.`is`
@@ -20,7 +18,6 @@ import org.junit.rules.TestRule
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnit
-
 
 class RecipeViewModelTest {
 
@@ -41,36 +38,24 @@ class RecipeViewModelTest {
     lateinit var recipeRepository: RecipeRepository
 
 
-    class LayoutManager: RecyclerView.LayoutManager() {
-
-        override fun generateDefaultLayoutParams(): RecyclerView.LayoutParams {
-
-            return RecyclerView.LayoutParams(100,100)
-        }
-
-    }
-
-    @Mock
-    val scrollListener = EndlessRecyclerViewScrollListener(LayoutManager())
-
     private lateinit var sut: RecipeListViewModel
 
     // Tests
     @Before
     fun setUp() {
 
+        sut = RecipeListViewModel(recipeRepository)
+
         val recipeList = arrayListOf<Recipe>()
         recipeList.add(Recipe("This is a test title","test","test","test"))
-        `when`(recipeRepository.searchRecipes(RecipeRequest("test"))).thenAnswer { invocation ->
-            Observable.just(recipeList.filter { recipe ->
-                val query = invocation.getArgument<RecipeRequest>(0).query
-                recipe.title.contains(query)
-            })
-        }
-        `when`(scrollListener.resetState()).then {  }
 
-        sut = RecipeListViewModel(recipeRepository)
-        sut.scrollListener = scrollListener
+        `when`(recipeRepository.searchRecipes(sut.recipeRequest)).thenAnswer { invocation ->
+            val req = invocation.getArgument<RecipeRequest>(0)
+            req.results = recipeList.filter { recipe ->
+                recipe.title.contains(req.query)
+            }
+            Observable.just(req)
+        }
     }
 
     @Test

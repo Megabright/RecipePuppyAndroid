@@ -2,7 +2,6 @@ package com.mundaco.recipepuppy.ui.recipe
 
 import android.arch.lifecycle.MutableLiveData
 import android.support.v7.widget.SearchView
-import android.util.Log
 import android.view.View
 import com.mundaco.recipepuppy.R
 import com.mundaco.recipepuppy.base.BaseViewModel
@@ -26,7 +25,7 @@ class RecipeListViewModel(private val recipeRepository: RecipeRepository):
 {
     private lateinit var subscription: Disposable
 
-    private var recipeRequest = RecipeRequest()
+    var recipeRequest = RecipeRequest()
 
     val recipeList: MutableLiveData<List<Recipe>> = MutableLiveData()
 
@@ -64,7 +63,13 @@ class RecipeListViewModel(private val recipeRepository: RecipeRepository):
         recipeRequest.query = query
         recipeRequest.page = 1
 
-        if(recipeRequest.query.isNotEmpty()) sendCurrentRequest()
+        if(recipeRequest.query.isEmpty()) {
+            loadingVisibility.value = View.GONE
+            errorMessage.value = null
+        }
+        else {
+            sendCurrentRequest()
+        }
     }
 
     override fun requestNextPage(page: Int) {
@@ -77,7 +82,7 @@ class RecipeListViewModel(private val recipeRepository: RecipeRepository):
 
     override fun sendCurrentRequest() {
 
-        Log.d("RecipeListViewModel", "sendCurrentRequest(${recipeRequest.query},${recipeRequest.page},${recipeRequest.results})")
+        //Log.d("RecipeListViewModel", "sendCurrentRequest(${recipeRequest.query},${recipeRequest.page},${recipeRequest.results})")
 
         subscription = recipeRepository.searchRecipes(recipeRequest)
             .subscribeOn(Schedulers.io())
@@ -115,7 +120,7 @@ class RecipeListViewModel(private val recipeRepository: RecipeRepository):
     }
 
     fun onEndOfPageReached(page: Int) {
-        Log.d("RecipeListViewModel", "endOfPageReached($page)")
+        //Log.d("RecipeListViewModel", "endOfPageReached($page)")
         requestNextPage(page)
     }
 
