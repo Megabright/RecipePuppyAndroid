@@ -68,9 +68,11 @@ class RecipeListViewModel(private val recipeRepository: RecipeRepository):
 
     override fun loadNextPageResults(page: Int) {
 
-        recipeRequest.page = page
+        if(page == recipeRequest.page + 1) {
+            recipeRequest.page = page
 
-        sendCurrentRequest()
+            sendCurrentRequest()
+        }
 
     }
 

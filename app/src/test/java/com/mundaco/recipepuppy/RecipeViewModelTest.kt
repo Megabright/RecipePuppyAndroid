@@ -37,6 +37,14 @@ class RecipeViewModelTest {
     @Mock
     lateinit var recipeRepository: RecipeRepository
 
+    private val recipeList = arrayOf(
+        Recipe("This is a test title","test","test","test"),
+        Recipe("This is another test title","test","test","test"),
+        Recipe("This is yet another test title","test","test","test"),
+        Recipe("And another test title","test","test","test"),
+        Recipe("Fifth test title","test","test","test"),
+        Recipe("Sixth test title","test","test","test")
+    )
 
     private lateinit var sut: RecipeListViewModel
 
@@ -46,11 +54,6 @@ class RecipeViewModelTest {
 
         sut = RecipeListViewModel(recipeRepository)
 
-        val recipeList = arrayListOf<Recipe>()
-        recipeList.add(Recipe("This is a test title","test","test","test"))
-        recipeList.add(Recipe("This is another test title","test","test","test"))
-        recipeList.add(Recipe("This is yet another test title","test","test","test"))
-        recipeList.add(Recipe("And another test title","test","test","test"))
 
         `when`(recipeRepository.searchRecipes(sut.recipeRequest)).thenAnswer { invocation ->
             val req = invocation.getArgument<RecipeRequest>(0)
@@ -121,6 +124,24 @@ class RecipeViewModelTest {
     }
 
     @Test
+    fun loadNextPageResults_withEmptyQueryAndPageTwo_ReturnsAnEmptyRecipeList() {
+
+        sut.loadNewQueryResults("")
+        sut.loadNextPageResults(2)
+
+        assertThat(sut.recipeList.value!!.size, `is`(0))
+    }
+
+    @Test
+    fun loadNextPageResults_withNonEmptyQueryAndPageOne_ReturnsTwoRecipes() {
+
+        sut.loadNewQueryResults("test")
+        sut.loadNextPageResults(1)
+
+        assertThat(sut.recipeList.value!!.size, `is`(2))
+    }
+
+    @Test
     fun loadNextPageResults_withNonEmptyQueryAndPageTwo_ReturnsFourRecipes() {
 
         sut.loadNewQueryResults("test")
@@ -129,4 +150,13 @@ class RecipeViewModelTest {
         assertThat(sut.recipeList.value!!.size, `is`(4))
     }
 
+    @Test
+    fun loadNextPageResults_withNonEmptyQueryAndPagePreviousToPageTwo_ReturnsFourRecipes() {
+
+        sut.loadNewQueryResults("test")
+        sut.loadNextPageResults(2)
+        sut.loadNextPageResults(1)
+
+        assertThat(sut.recipeList.value!!.size, `is`(4))
+    }
 }
