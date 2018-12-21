@@ -47,7 +47,10 @@ class RecipeListActivity : AppCompatActivity() {
 
         binding.viewModel = viewModel
 
-        viewModel.scrollListener = EndlessRecyclerViewScrollListener(binding.recipeList.layoutManager!!,viewModel)
+        viewModel.scrollListener = EndlessRecyclerViewScrollListener(binding.recipeList.layoutManager!!)
+        viewModel.scrollListener.endOfPageReached.observe(this, Observer {
+            if(it != null) viewModel.onEndOfPageReached(it)
+        })
     }
 
     override fun onResume() {

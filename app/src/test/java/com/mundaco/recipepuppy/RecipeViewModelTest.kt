@@ -8,7 +8,6 @@ import com.mundaco.recipepuppy.data.model.Recipe
 import com.mundaco.recipepuppy.data.model.RecipeRequest
 import com.mundaco.recipepuppy.rules.RxImmediateSchedulerRule
 import com.mundaco.recipepuppy.ui.recipe.EndlessRecyclerViewScrollListener
-import com.mundaco.recipepuppy.ui.recipe.EndlessRecyclerViewScrollListenerDelegate
 import com.mundaco.recipepuppy.ui.recipe.RecipeListViewModel
 import io.reactivex.Observable
 import org.hamcrest.CoreMatchers.`is`
@@ -42,13 +41,6 @@ class RecipeViewModelTest {
     lateinit var recipeRepository: RecipeRepository
 
 
-    class ScrollListenerDelegate: EndlessRecyclerViewScrollListenerDelegate {
-        override fun onEndOfPageReached(page: Int, totalItemsCount: Int, view: RecyclerView) {
-
-        }
-
-    }
-
     class LayoutManager: RecyclerView.LayoutManager() {
 
         override fun generateDefaultLayoutParams(): RecyclerView.LayoutParams {
@@ -59,7 +51,7 @@ class RecipeViewModelTest {
     }
 
     @Mock
-    val scrollListener = EndlessRecyclerViewScrollListener(LayoutManager(), ScrollListenerDelegate())
+    val scrollListener = EndlessRecyclerViewScrollListener(LayoutManager())
 
     private lateinit var sut: RecipeListViewModel
 

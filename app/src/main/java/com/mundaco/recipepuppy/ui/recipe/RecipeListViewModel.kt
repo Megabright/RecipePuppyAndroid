@@ -1,7 +1,6 @@
 package com.mundaco.recipepuppy.ui.recipe
 
 import android.arch.lifecycle.MutableLiveData
-import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
 import android.util.Log
 import android.view.View
@@ -23,8 +22,7 @@ class RecipeListViewModel(private val recipeRepository: RecipeRepository):
     SearchTextChangedUseCase,
     ListItemClickedUseCase,
     ListScrolledToBottomUseCase,
-    RetryButtonClickedUseCase,
-    EndlessRecyclerViewScrollListenerDelegate
+    RetryButtonClickedUseCase
 {
     private lateinit var subscription: Disposable
 
@@ -63,7 +61,7 @@ class RecipeListViewModel(private val recipeRepository: RecipeRepository):
         recipeList.value = emptyList()
 
         scrollPosition.value = 0
-       
+
         recipeRequest.query = query
         recipeRequest.page = 1
 
@@ -118,8 +116,8 @@ class RecipeListViewModel(private val recipeRepository: RecipeRepository):
         subscription.dispose()
     }
 
-    override fun onEndOfPageReached(page: Int, totalItemsCount: Int, view: RecyclerView) {
-        Log.d("RecipeListViewModel", "endOfPageReached($page,$totalItemsCount)")
+    fun onEndOfPageReached(page: Int) {
+        Log.d("RecipeListViewModel", "endOfPageReached($page)")
         requestNextPage(page)
     }
 

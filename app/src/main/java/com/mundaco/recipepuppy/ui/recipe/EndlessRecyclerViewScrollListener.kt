@@ -1,14 +1,16 @@
 package com.mundaco.recipepuppy.ui.recipe
 
+import android.arch.lifecycle.MutableLiveData
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.StaggeredGridLayoutManager
 
 class EndlessRecyclerViewScrollListener(
-    private val mLayoutManager: RecyclerView.LayoutManager,
-    private val delegate: EndlessRecyclerViewScrollListenerDelegate
+    private val mLayoutManager: RecyclerView.LayoutManager
 ): RecyclerView.OnScrollListener() {
+
+    var endOfPageReached: MutableLiveData<Int> = MutableLiveData()
 
     // The minimum amount of items to have below your current scroll position
     // before loading more.
@@ -111,6 +113,6 @@ class EndlessRecyclerViewScrollListener(
 
     // Defines the process for actually loading more data based on page
     private fun onEndOfPageReached(page: Int, totalItemsCount: Int, view: RecyclerView) {
-        delegate.onEndOfPageReached(page, totalItemsCount, view)
+        endOfPageReached.value = page
     }
 }
