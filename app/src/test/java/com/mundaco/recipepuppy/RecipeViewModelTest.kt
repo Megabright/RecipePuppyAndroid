@@ -107,7 +107,48 @@ class RecipeViewModelTest {
         assertThat(sut.errorMessage.value, nullValue())
     }
 
-    // TODO: Test paging
-    // TODO: Test navigation to detail view
+    @Test
+    fun onEndOfPageReached_withEmptyQuery_hidesLoadingIndicator() {
 
+        sut.onQueryTextListener.onQueryTextChange("")
+        sut.onEndOfPageReached(1)
+
+        assertThat(sut.loadingVisibility.value, `is`(View.GONE))
+    }
+
+    @Test
+    fun onEndOfPageReached_withNonEmptyQuery_hidesLoadingIndicator() {
+
+        sut.onQueryTextListener.onQueryTextChange("test")
+        sut.onEndOfPageReached(1)
+
+        assertThat(sut.loadingVisibility.value, `is`(View.GONE))
+    }
+
+    @Test
+    fun onEndOfPageReached_withEmptyQuery_setsErrorMessageValueToNull() {
+
+        sut.onQueryTextListener.onQueryTextChange("")
+        sut.onEndOfPageReached(1)
+
+        assertThat(sut.errorMessage.value, nullValue())
+    }
+
+    @Test
+    fun onEndOfPageReached_withNonEmptyQuery_setsErrorMessageValueToNull() {
+
+        sut.onQueryTextListener.onQueryTextChange("test")
+        sut.onEndOfPageReached(1)
+
+        assertThat(sut.errorMessage.value, nullValue())
+    }
+
+    @Test
+    fun showRecipe_withEmptyQuery_setsSelectedRecipe() {
+
+
+        sut.showRecipe(recipeList[0])
+
+        assertThat(sut.interactor.selectedRecipe.value, `is`(recipeList[0]))
+    }
 }
