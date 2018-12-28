@@ -43,16 +43,17 @@ class RecipeListActivity : AppCompatActivity() {
         })
 
         viewModel = ViewModelProviders.of(this, ViewModelFactory(applicationContext)).get(RecipeListViewModel::class.java)
-        viewModel.errorMessage.observe(this, Observer {
-                errorMessage -> if(errorMessage != null) showError(errorMessage) else hideError()
+
+        viewModel.errorMessage.observe(this, Observer { errorMessage ->
+            if(errorMessage != null) showError(errorMessage) else hideError()
         })
-        viewModel.interactor.selectedRecipe.observe(this, Observer {
+        viewModel.interactor.selectedRecipe.observe(this, Observer { recipe ->
             val intent = Intent(applicationContext , RecipeDetailActivity::class.java )
-            intent.putExtra("recipe", it)
+            intent.putExtra("recipe", recipe)
             startActivity(intent)
         })
-        viewModel.interactor.requestState.observe(this, Observer {
-            if(it != null) viewModel.onRequestStateChanged(it)
+        viewModel.interactor.requestState.observe(this, Observer {state ->
+            if(state != null) viewModel.onRequestStateChanged(state)
         })
 
         binding.viewModel = viewModel
